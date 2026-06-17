@@ -18,11 +18,15 @@ export default function Home() {
             </div>
 
             <h1 className="mb-5 max-w-2xl text-3xl font-black leading-[1.18] tracking-[-0.04em] text-slate-950 sm:text-4xl md:text-6xl">
-              화순 목장에서 만든
-              <br />
-              <span className="text-amber-700">
-                무항생제 원유 요거트
-              </span>
+            화순 목장에서 만든
+            <br />
+            <span className="text-amber-700">
+              무항생제 원유
+            </span>
+            <br />
+            <span className="text-amber-700">
+              요거트
+            </span>
             </h1>
 
             <p className="mb-6 max-w-xl text-sm leading-7 text-slate-700 sm:text-base md:text-lg md:leading-8">
