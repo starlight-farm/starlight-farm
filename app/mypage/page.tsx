@@ -20,6 +20,7 @@ export default function MyPage() {
   const [connections, setConnections] = useState<any[]>([]);
   const [selectedStar, setSelectedStar] = useState<string | null>(null);
   const [dragging, setDragging] = useState<string | null>(null);
+  const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(null);
   const [hasMoved, setHasMoved] = useState(false);
   const [shareId, setShareId] = useState("");
   const [phone, setPhone] = useState("");
@@ -168,14 +169,20 @@ export default function MyPage() {
   
     setDragging(key);
     setHasMoved(false);
+    setDragStart({ x: e.clientX, y: e.clientY });
   
     e.currentTarget.setPointerCapture(e.pointerId);
   };
   
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (!dragging || !skyRef.current) return;
+    if (!dragging || !skyRef.current || !dragStart) return;
   
     e.preventDefault();
+  
+    const movedDistance =
+      Math.abs(e.clientX - dragStart.x) + Math.abs(e.clientY - dragStart.y);
+  
+    if (movedDistance < 8) return;
   
     setHasMoved(true);
   
@@ -197,14 +204,20 @@ export default function MyPage() {
   };
   
   const handlePointerUp = () => {
-    if (dragging) {
+    if (dragging && !hasMoved) {
+      handleStarSelect(dragging);
+    }
+  
+    if (dragging && hasMoved) {
       saveSkyToSupabase(positions, connections);
     }
   
     setDragging(null);
+    setDragStart(null);
+    setHasMoved(false);
   };
 
-  const handleStarClick = (key: string) => {
+  const handleStarSelect = (key: string) => {
     if (hasMoved) {
       setHasMoved(false);
       return;
@@ -850,7 +863,6 @@ export default function MyPage() {
                 <span
                   key={key}
                   onPointerDown={(e) => handlePointerDown(e, key)}
-                  onClick={() => handleStarClick(key)}
                   className={`absolute z-20 -translate-x-1/2 -translate-y-1/2 cursor-grab text-[11px] active:cursor-grabbing ${
                     isSelected
                       ? "scale-150 drop-shadow-[0_0_14px_rgba(96,165,250,1)]"
@@ -876,7 +888,6 @@ export default function MyPage() {
                 <span
                   key={key}
                   onPointerDown={(e) => handlePointerDown(e, key)}
-                  onClick={() => handleStarClick(key)}
                   className={`absolute z-30 -translate-x-1/2 -translate-y-1/2 cursor-grab active:cursor-grabbing ${
                     isSelected
                       ? "scale-125 drop-shadow-[0_0_20px_rgba(96,165,250,1)]"
