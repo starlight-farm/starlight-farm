@@ -27,6 +27,7 @@ export default function MyPage() {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [editingProfile, setEditingProfile] = useState(false);
+  const [activeTab, setActiveTab] = useState("sky");
 
   const [editName, setEditName] = useState("");
   const [editPhone, setEditPhone] = useState("");
@@ -669,60 +670,94 @@ export default function MyPage() {
       <Header />
 
       <div className="flex justify-center p-4">
-        <div className="w-full max-w-2xl rounded-3xl border border-white/10 bg-white/5 p-8 text-center">
+        <div className="w-full max-w-5xl rounded-3xl border border-white/10 bg-white/5 p-8 text-center">
           <div className="mb-4 text-5xl">🌙</div>
 
           <h1 className="mb-3 text-4xl font-bold">나의 밤하늘</h1>
 
           <p className="mb-3 text-xl font-bold">{name}님, 환영합니다.</p>
-
-      <div className="mb-6">
-        <button
-          onClick={() => setEditingProfile(!editingProfile)}
-          className="rounded-full bg-blue-500 px-5 py-2 text-sm font-bold text-white hover:bg-blue-400"
-        >
-          회원정보 수정
-        </button>
-      </div>
-
-      {editingProfile && (
-        <div className="mb-8 rounded-2xl bg-slate-900 p-6 text-left">
-          <h2 className="mb-4 text-xl font-bold text-white">
-            회원정보 수정
-          </h2>
-
-          <div className="space-y-3">
-            <input
-              value={editName}
-              onChange={(e) => setEditName(e.target.value)}
-              placeholder="이름"
-              className="w-full rounded-lg bg-slate-800 p-3 text-white"
-            />
-
-            <input
-              value={editPhone}
-              onChange={(e) => setEditPhone(e.target.value)}
-              placeholder="휴대폰 번호"
-              className="w-full rounded-lg bg-slate-800 p-3 text-white"
-            />
-
-            <input
-              value={editAddress}
-              onChange={(e) => setEditAddress(e.target.value)}
-              placeholder="주소"
-              className="w-full rounded-lg bg-slate-800 p-3 text-white"
-            />
-
-            <button
-              onClick={saveProfile}
-              className="rounded-lg bg-green-500 px-5 py-3 font-bold text-white hover:bg-green-400"
-            >
-              저장하기
-            </button>
+          <div className="mb-8 flex flex-wrap justify-center gap-2">
+            {[
+              { key: "sky", label: "밤하늘" },
+              { key: "verify", label: "구매인증" },
+              { key: "orders", label: "구매내역" },
+              { key: "rewards", label: "교환내역" },
+              { key: "inquiries", label: "문의내역" },
+              { key: "profile", label: "회원정보" },
+            ].map((tab) => (
+              <button
+                key={tab.key}
+                onClick={() => setActiveTab(tab.key)}
+                className={`rounded-full px-4 py-2 text-sm font-bold ${
+                  activeTab === tab.key
+                    ? "bg-yellow-400 text-slate-950"
+                    : "bg-slate-800 text-white"
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
           </div>
-        </div>
-      )}
 
+          {activeTab === "profile" && (
+            <>
+              <div className="mb-6">
+                <button
+                  onClick={() => setEditingProfile(!editingProfile)}
+                  className="rounded-full bg-blue-500 px-5 py-2 text-sm font-bold text-white hover:bg-blue-400"
+                >
+                  회원정보 수정
+                </button>
+              </div>
+
+              {editingProfile && (
+                <div className="mb-8 rounded-2xl bg-slate-900 p-6 text-left">
+                  <h2 className="mb-4 text-xl font-bold text-white">
+                    회원정보 수정
+                  </h2>
+
+                  <div className="space-y-3">
+                    <input
+                      value={editName}
+                      onChange={(e) => setEditName(e.target.value)}
+                      placeholder="이름"
+                      className="w-full rounded-lg bg-slate-800 p-3 text-white"
+                    />
+
+                    <input
+                      value={editPhone}
+                      onChange={(e) => setEditPhone(e.target.value)}
+                      placeholder="휴대폰 번호"
+                      className="w-full rounded-lg bg-slate-800 p-3 text-white"
+                    />
+
+                    <input
+                      value={editAddress}
+                      onChange={(e) => setEditAddress(e.target.value)}
+                      placeholder="주소"
+                      className="w-full rounded-lg bg-slate-800 p-3 text-white"
+                    />
+
+                    <button
+                      onClick={saveProfile}
+                      className="rounded-lg bg-green-500 px-5 py-3 font-bold text-white hover:bg-green-400"
+                    >
+                      저장하기
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              <button
+                onClick={() => (window.location.href = "/reset-password")}
+                className="mb-6 rounded-full bg-slate-700 px-6 py-3 font-bold text-white hover:bg-slate-600"
+              >
+                비밀번호 변경
+              </button>
+            </>
+          )}
+      {activeTab === "sky" && (
+        <>
           <p className="mb-2 text-slate-300">
             별을 움직이고, 별 하나를 클릭한 뒤 다른 별을 클릭하면 선으로 연결돼요.
           </p>
@@ -740,7 +775,7 @@ export default function MyPage() {
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
             onPointerLeave={handlePointerUp}
-            className="relative mb-4 h-[460px] overflow-hidden rounded-3xl border border-blue-400/30 bg-[#020617] shadow-[0_0_40px_rgba(59,130,246,0.25)] select-none touch-none"
+            className="relative mb-4 h-[520px] overflow-hidden rounded-3xl border border-blue-400/30 bg-[#020617] shadow-[0_0_40px_rgba(59,130,246,0.25)] select-none touch-none"
             >
             {totalStars >= 100 && totalStars < 500 && (
               <>
@@ -1010,14 +1045,12 @@ export default function MyPage() {
           >
             {processing ? "교환 신청 중..." : "요거트 1L 교환하기"}
           </button>
+      
+        </>
+      )}
 
-          <button
-            onClick={() => (window.location.href = "/reset-password")}
-            className="mb-6 rounded-full bg-slate-700 px-6 py-3 font-bold text-white hover:bg-slate-600"
-          >
-            비밀번호 변경
-          </button>
-
+      {activeTab === "verify" && (
+        <>
           <div className="mt-8 rounded-2xl bg-slate-900 p-6 text-left">
             <h2 className="mb-4 text-xl font-bold text-white">
               구매 인증 신청
@@ -1108,7 +1141,10 @@ export default function MyPage() {
               </div>
             )}
           </div>
+        </>
+      )}    
 
+      {activeTab === "orders" && (    
           <div className="mt-8 rounded-2xl bg-slate-900 p-6 text-left">
             <h2 className="mb-4 text-xl font-bold text-white">구매 내역</h2>
 
@@ -1158,7 +1194,9 @@ export default function MyPage() {
               </div>
             )}
           </div>
+      )}  
 
+      {activeTab === "rewards" && (
           <div className="mt-8 rounded-2xl bg-slate-900 p-6 text-left">
             <h2 className="mb-4 text-xl font-bold text-white">교환 신청 내역</h2>
 
@@ -1195,6 +1233,9 @@ export default function MyPage() {
               </div>
             )}
           </div>
+      )}
+
+      {activeTab === "inquiries" && (
           <div className="mt-8 rounded-2xl bg-slate-900 p-6 text-left">
             <h2 className="mb-4 text-xl font-bold text-white">
               문의 내역
@@ -1253,6 +1294,8 @@ export default function MyPage() {
               </div>
             )}
           </div>
+      )}
+
         </div>
       </div>
     </main>
