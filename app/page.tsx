@@ -10,14 +10,14 @@ export default function Home() {
       <Header />
 
       {/* HERO */}
-      <section className="mx-auto max-w-6xl px-6 py-20">
+      <section className="mx-auto max-w-6xl px-4 py-12 md:px-6 md:py-20">
         <div className="grid gap-12 md:grid-cols-2 md:items-center">
           <div>
             <div className="mb-4 inline-block rounded-full bg-yellow-100 px-4 py-2 text-sm font-bold text-amber-700">
               🐄 화순 목장에서 직접 생산
             </div>
 
-            <h1 className="mb-6 max-w-2xl text-4xl font-black leading-[1.18] tracking-[-0.04em] text-slate-950 md:text-6xl">
+            <h1 className="mb-5 max-w-2xl text-3xl font-black leading-[1.18] tracking-[-0.04em] text-slate-950 sm:text-4xl md:text-6xl">
               화순 목장에서 만든
               <br />
               <span className="text-amber-700">
@@ -25,13 +25,13 @@ export default function Home() {
               </span>
             </h1>
 
-            <p className="mb-6 max-w-xl text-base leading-8 text-slate-700 md:text-lg">
+            <p className="mb-6 max-w-xl text-sm leading-7 text-slate-700 sm:text-base md:text-lg md:leading-8">
               별빛목장은 화순 목장에서 직접 생산한 신선한 원유를 사용합니다.
               <br className="hidden md:block" />
               HACCP인증 시설에서 정성껏 발효해 풍미있는 요거트로 만듭니다.
             </p>
 
-            <div className="mb-8 grid max-w-2xl grid-cols-2 gap-0 overflow-hidden rounded-2xl border border-amber-100 bg-white shadow-sm md:grid-cols-4">
+            <div className="mb-8 grid max-w-2xl grid-cols-1 gap-0 overflow-hidden rounded-2xl border border-amber-100 bg-white shadow-sm sm:grid-cols-2 md:grid-cols-4">
               <div className="border-b border-r border-amber-100 p-4 md:border-b-0">
                 <div className="mb-1 text-xl">🐄</div>
                 <p className="text-sm font-black text-slate-900">
@@ -98,7 +98,7 @@ export default function Home() {
               <img
                 src="/images/main-yogurt.jpg"
                 alt="별빛목장 요거트"
-                className="h-[420px] w-full rounded-[1.5rem] object-cover"
+                className="h-72 w-full rounded-[1.5rem] object-cover sm:h-80 md:h-[420px]"
               />
 
               <div className="absolute bottom-6 left-6 right-6 rounded-2xl bg-white/90 p-5 shadow-lg backdrop-blur">
@@ -292,7 +292,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="relative h-80 overflow-hidden rounded-3xl border border-blue-300/30 bg-[#020617] shadow-[0_0_40px_rgba(59,130,246,0.25)]">
+          <div className="relative h-72 overflow-hidden rounded-3xl border border-blue-300/30 bg-[#020617] shadow-[0_0_40px_rgba(59,130,246,0.25)] sm:h-80">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_25%,rgba(59,130,246,0.25),transparent_35%),radial-gradient(circle_at_70%_60%,rgba(168,85,247,0.25),transparent_40%)]" />
 
             <div className="absolute left-6 top-6 text-4xl">🌙</div>
@@ -340,15 +340,15 @@ export default function Home() {
             <div className="absolute left-[80%] top-[28%] h-1 w-1 rounded-full bg-blue-100 shadow-[0_0_8px_rgba(191,219,254,1)]" />
             <div className="absolute left-[47%] top-[22%] h-1 w-1 rounded-full bg-yellow-100 shadow-[0_0_8px_rgba(254,240,138,1)]" />
 
-            <div className="absolute bottom-5 left-5 rounded-full border border-yellow-300/40 bg-yellow-300/10 px-4 py-2 text-sm font-bold text-yellow-100">
-              ♓ 물고기자리 미리보기
+            <div className="absolute bottom-5 left-4 rounded-full border border-yellow-300/40 bg-yellow-300/10 px-3 py-2 text-xs font-bold text-yellow-100 sm:left-5 sm:px-4 sm:text-sm">
+              ♓ 물고기자리
             </div>
 
             <Link
               href="/mypage"
-              className="absolute bottom-5 right-5 rounded-full bg-yellow-400 px-4 py-2 text-sm font-black text-slate-950 hover:bg-yellow-300"
+              className="absolute bottom-5 right-4 rounded-full bg-yellow-400 px-3 py-2 text-xs font-black text-slate-950 hover:bg-yellow-300 sm:right-5 sm:px-4 sm:text-sm"
             >
-              나의 밤하늘 보기
+              밤하늘 보기
             </Link>
           </div>
         </div>
