@@ -1,0 +1,141 @@
+.shooting-star {
+    position: absolute;
+    z-index: 15;
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      rgba(147,197,253,1),
+      rgba(255,255,255,0.9),
+      rgba(255,255,255,0)
+      );
+      box-shadow: 0 0 12px rgba(147,197,253,0.9);
+  
+    border-radius: 999px;
+  
+    transform: rotate(-35deg);
+  
+    pointer-events: none;
+  }
+  
+  .shooting-star-1 {
+    top: 10%;
+    right: -20%;
+  
+    animation: shooting1 8s linear infinite;
+  }
+  
+  .shooting-star-2 {
+    top: 30%;
+    right: -30%;
+  
+    animation: shooting2 12s linear infinite;
+  }
+  
+  @keyframes shooting1 {
+    0% {
+      transform: translateX(0) rotate(-35deg);
+      opacity: 0;
+    }
+  
+    10% {
+      opacity: 1;
+    }
+  
+    100% {
+        transform: translateX(-1200px) translateY(700px) rotate(-35deg);
+        opacity: 0;
+      }
+  }
+  
+  @keyframes shooting2 {
+    0% {
+      transform: translateX(0) rotate(-35deg);
+      opacity: 0;
+    }
+  
+    10% {
+      opacity: 1;
+    }
+  
+    100% {
+        transform: translateX(-1400px) translateY(800px) rotate(-35deg);
+        opacity: 0;
+      }
+  }
+  @keyframes twinkle {
+    0% {
+      opacity: 0.7;
+      transform: scale(1);
+    }
+  
+    50% {
+      opacity: 1;
+      transform: scale(1.15);
+    }
+  
+    100% {
+      opacity: 0.7;
+      transform: scale(1);
+    }
+  }
+  .shooting-star-3 {
+    top: 5%;
+    right: -20%;
+  
+    animation: shooting3 6s linear infinite;
+  }
+  
+  @keyframes shooting3 {
+    0% {
+      transform: translateX(0) rotate(-35deg);
+      opacity: 0;
+    }
+  
+    10% {
+      opacity: 1;
+    }
+  
+    100% {
+      transform: translateX(-1700px) translateY(950px) rotate(-35deg);
+      opacity: 0;
+    }
+  }  
+  .shooting-star-random {
+    position: absolute;
+    z-index: 15;
+    width: 130px;
+    height: 2px;
+    right: -20%;
+    border-radius: 999px;
+    pointer-events: none;
+  
+    background: linear-gradient(
+      90deg,
+      rgba(147,197,253,1),
+      rgba(255,255,255,0.9),
+      rgba(255,255,255,0)
+    );
+  
+    box-shadow: 0 0 12px rgba(147,197,253,0.9);
+  
+    animation-name: shootingRandom;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+  }
+  
+  @keyframes shootingRandom {
+    0% {
+      transform: translateX(0) translateY(0) rotate(-35deg);
+      opacity: 0;
+    }
+  
+    10% {
+      opacity: 1;
+    }
+  
+    100% {
+      transform: translateX(var(--move-x)) translateY(var(--move-y)) rotate(-35deg);
+      opacity: 0;
+    }
+  }
