@@ -30,32 +30,35 @@ export default function NoticePage() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-slate-950 text-white">
+    <main className="min-h-screen bg-[#FFF8EC] text-slate-900">
       <Header />
 
       <section className="mx-auto max-w-5xl px-6 py-20">
         <div className="mb-12 text-center">
+        <p className="mb-3 text-sm font-bold text-amber-700">
+          Notice
+        </p>
           <h1 className="mb-4 text-5xl font-bold">공지사항</h1>
 
-          <p className="text-slate-400">
+          <p className="text-slate-600">
             별빛목장의 새로운 소식과 배송 안내를 확인하세요.
           </p>
         </div>
 
         {loading ? (
-          <p className="text-center text-slate-400">
+          <p className="text-center text-slate-500">
             공지사항을 불러오는 중입니다...
           </p>
         ) : notices.length === 0 ? (
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-8 text-center">
-            <p className="text-slate-400">등록된 공지사항이 없습니다.</p>
+          <div className="rounded-3xl border border-amber-100 bg-white p-8 text-center shadow-sm">
+            <p className="text-slate-500">등록된 공지사항이 없습니다.</p>
           </div>
         ) : (
           <div className="space-y-6">
             {notices.map((notice) => (
               <div
                 key={notice.id}
-                className="rounded-3xl border border-white/10 bg-white/5 p-6"
+                className="rounded-3xl border border-amber-100 bg-white p-6 shadow-sm"
               >
                 <div className="mb-2 text-sm text-slate-400">
                   {new Date(notice.created_at).toLocaleDateString("ko-KR")}
@@ -63,7 +66,7 @@ export default function NoticePage() {
 
                 <h2 className="mb-3 text-xl font-bold">{notice.title}</h2>
 
-                <p className="whitespace-pre-line text-slate-300">
+                <p className="whitespace-pre-line text-slate-700">
                   {notice.content}
                 </p>
               </div>

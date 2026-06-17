@@ -10,6 +10,9 @@ export default function AdminPage() {
   const [notices, setNotices] = useState<any[]>([]);
   const [orders, setOrders] = useState<any[]>([]);
   const [purchaseVerifications, setPurchaseVerifications] = useState<any[]>([]);
+  const [inquiries, setInquiries] = useState<any[]>([]);
+  const [answerText, setAnswerText] = useState<Record<number, string>>({});
+  const [activeTab, setActiveTab] = useState("purchase");
 
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -174,6 +177,20 @@ export default function AdminPage() {
     setPurchaseVerifications(data ?? []);
   };
 
+  const loadInquiries = async () => {
+    const { data, error } = await supabase
+      .from("inquiries")
+      .select("*")
+      .order("created_at", { ascending: false });
+  
+    if (error) {
+      alert("문의 목록 불러오기 실패: " + error.message);
+      return;
+    }
+  
+    setInquiries(data ?? []);
+  };
+
   const loadAll = async () => {
     setLoading(true);
     await loadRequests();
@@ -181,6 +198,7 @@ export default function AdminPage() {
     await loadNotices();
     await loadOrders(memberRows);
     await loadPurchaseVerifications();
+    await loadInquiries();
     setLoading(false);
   };
 
@@ -508,6 +526,38 @@ export default function AdminPage() {
     alert("공지 삭제 완료!");
   };
 
+  const saveInquiryAnswer = async (inquiry: any) => {
+    const answer = answerText[inquiry.id];
+  
+    if (!answer?.trim()) {
+      alert("답변을 입력하세요.");
+      return;
+    }
+  
+    const { data, error } = await supabase
+      .from("inquiries")
+      .update({
+        answer,
+        status: "답변완료",
+        answered_at: new Date().toISOString(),
+      })
+      .eq("id", inquiry.id)
+      .select();
+  
+    if (error) {
+      alert("답변 저장 실패: " + error.message);
+      return;
+    }
+  
+    if (!data || data.length === 0) {
+      alert("답변 저장 실패: 수정된 문의가 없습니다. RLS 정책을 확인하세요.");
+      return;
+    }
+  
+    await loadInquiries();
+    alert("답변 저장 완료");
+  };
+
   useEffect(() => {
     const init = async () => {
       const ok = await checkAdmin();
@@ -570,6 +620,74 @@ export default function AdminPage() {
         </div>
       </div>
 
+      <div className="mb-8 flex flex-wrap gap-2">
+        <button
+          onClick={() => setActiveTab("purchase")}
+          className={`rounded-full px-4 py-2 font-bold ${
+            activeTab === "purchase"
+              ? "bg-yellow-400 text-slate-950"
+              : "bg-slate-800 text-white"
+          }`}
+        >
+          구매인증
+        </button>
+
+        <button
+          onClick={() => setActiveTab("orders")}
+          className={`rounded-full px-4 py-2 font-bold ${
+            activeTab === "orders"
+              ? "bg-yellow-400 text-slate-950"
+              : "bg-slate-800 text-white"
+          }`}
+        >
+          주문관리
+        </button>
+
+        <button
+          onClick={() => setActiveTab("notices")}
+          className={`rounded-full px-4 py-2 font-bold ${
+            activeTab === "notices"
+              ? "bg-yellow-400 text-slate-950"
+              : "bg-slate-800 text-white"
+          }`}
+        >
+          공지사항
+        </button>
+
+        <button
+          onClick={() => setActiveTab("members")}
+          className={`rounded-full px-4 py-2 font-bold ${
+            activeTab === "members"
+              ? "bg-yellow-400 text-slate-950"
+              : "bg-slate-800 text-white"
+          }`}
+        >
+          회원관리
+        </button>
+
+        <button
+          onClick={() => setActiveTab("inquiries")}
+          className={`rounded-full px-4 py-2 font-bold ${
+            activeTab === "inquiries"
+              ? "bg-yellow-400 text-slate-950"
+              : "bg-slate-800 text-white"
+          }`}
+        >
+          문의관리
+        </button>
+
+        <button
+          onClick={() => setActiveTab("rewards")}
+          className={`rounded-full px-4 py-2 font-bold ${
+            activeTab === "rewards"
+              ? "bg-yellow-400 text-slate-950"
+              : "bg-slate-800 text-white"
+          }`}
+        >
+          교환신청
+        </button>
+      </div>
+
       <div className="mb-8 grid gap-4 md:grid-cols-3">
         <div className="rounded-xl bg-slate-800 p-4">
           <p className="text-sm text-slate-400">전체 교환신청</p>
@@ -587,6 +705,7 @@ export default function AdminPage() {
         </div>
       </div>
 
+    {activeTab === "purchase" && (
       <div className="mb-8 rounded-2xl bg-slate-900 p-6">
         <h2 className="mb-4 text-2xl font-bold">
           구매 인증 신청 목록
@@ -645,7 +764,9 @@ export default function AdminPage() {
           </div>
         )}
       </div>
-
+    )}
+    {activeTab === "orders" && (
+      <>
       <div className="mb-8 rounded-2xl bg-slate-900 p-6">
         <h2 className="mb-4 text-2xl font-bold">주문 등록 / 별 자동 적립</h2>
 
@@ -745,7 +866,11 @@ export default function AdminPage() {
           </div>
         )}
       </div>
+      </>
+    )}
 
+    {activeTab === "notices" && (
+      <>
       <div className="mb-8 rounded-2xl bg-slate-900 p-6">
         <h2 className="mb-4 text-2xl font-bold">공지사항 작성</h2>
 
@@ -849,7 +974,9 @@ export default function AdminPage() {
           </div>
         )}
       </div>
-
+      </>
+    )}
+    {activeTab === "members" && (
       <div className="mb-8 rounded-2xl bg-slate-900 p-6">
         <h2 className="mb-4 text-2xl font-bold">회원 별 지급</h2>
 
@@ -902,7 +1029,88 @@ export default function AdminPage() {
           </div>
         )}
       </div>
+    )}
 
+    {activeTab === "inquiries" && (
+      <div className="mb-8 rounded-2xl bg-slate-900 p-6">
+        <h2 className="mb-4 text-2xl font-bold">문의 관리</h2>
+
+        {inquiries.length === 0 ? (
+          <p className="text-slate-400">등록된 문의가 없습니다.</p>
+        ) : (
+          <div className="space-y-4">
+            {inquiries.map((item) => (
+              <div
+                key={item.id}
+                className="rounded-xl border border-white/10 bg-white/5 p-4"
+              >
+                <p className="font-bold">{item.title}</p>
+
+                <p className="text-sm text-slate-300">
+                  분류: {item.category}
+                </p>
+
+                <p className="text-sm text-slate-300">
+                  작성자: {item.name}
+                </p>
+
+                <p className="mt-2 whitespace-pre-line text-slate-200">
+                  {item.content}
+                </p>
+
+                <p
+                  className={`mt-3 font-bold ${
+                    item.status === "답변완료"
+                      ? "text-green-400"
+                      : "text-yellow-400"
+                  }`}
+                >
+                  {item.status}
+                </p>
+
+                {item.answer && (
+                  <div className="mt-3 rounded-lg bg-green-900/30 p-3">
+                    <p className="font-bold text-green-300">
+                      관리자 답변
+                    </p>
+
+                    <p className="mt-2 whitespace-pre-line">
+                      {item.answer}
+                    </p>
+                  </div>
+                )}
+
+                {item.status !== "답변완료" && (
+                  <div className="mt-4">
+                    <textarea
+                      rows={4}
+                      value={answerText[item.id] ?? ""}
+                      onChange={(e) =>
+                        setAnswerText({
+                          ...answerText,
+                          [item.id]: e.target.value,
+                        })
+                      }
+                      placeholder="답변 입력"
+                      className="mb-3 w-full rounded-lg bg-slate-800 p-3 text-white"
+                    />
+
+                    <button
+                      onClick={() => saveInquiryAnswer(item)}
+                      className="rounded-lg bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-400"
+                    >
+                      답변 저장
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    )}
+
+    {activeTab === "rewards" && (
       <div className="rounded-2xl bg-slate-900 p-6">
         <h2 className="mb-4 text-2xl font-bold">교환 신청 목록</h2>
 
@@ -961,6 +1169,7 @@ export default function AdminPage() {
           </div>
         )}
       </div>
+    )}  
     </main>
   );
 }

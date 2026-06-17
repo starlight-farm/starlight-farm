@@ -38,6 +38,7 @@ export default function Header() {
           <Link href="/products">제품소개</Link>
           <Link href="/about">목장소개</Link>
           <Link href="/notice">공지사항</Link>
+          <Link href="/contact">문의하기</Link>
 
           {email ? (
             <>
@@ -99,6 +100,10 @@ export default function Header() {
 
               <Link href="/notice" onClick={() => setMenuOpen(false)}>
                 공지사항
+              </Link>
+
+              <Link href="/contact" onClick={() => setMenuOpen(false)}>
+                문의하기
               </Link>
 
               {email ? (

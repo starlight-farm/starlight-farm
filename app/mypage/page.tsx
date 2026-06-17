@@ -16,6 +16,7 @@ export default function MyPage() {
   const [requests, setRequests] = useState<any[]>([]);
   const [orders, setOrders] = useState<any[]>([]);
   const [verifications, setVerifications] = useState<any[]>([]);
+  const [inquiries, setInquiries] = useState<any[]>([]);
   const [positions, setPositions] = useState<any>({});
   const [connections, setConnections] = useState<any[]>([]);
   const [selectedStar, setSelectedStar] = useState<string | null>(null);
@@ -343,6 +344,21 @@ export default function MyPage() {
     setVerifications(data ?? []);
   };
 
+  const loadInquiries = async (id: string) => {
+    const { data, error } = await supabase
+      .from("inquiries")
+      .select("*")
+      .eq("user_id", id)
+      .order("created_at", { ascending: false });
+  
+    if (error) {
+      alert("문의 내역을 불러오지 못했습니다: " + error.message);
+      return;
+    }
+  
+    setInquiries(data ?? []);
+  };
+
   const loadProfile = async () => {
     const {
       data: { user },
@@ -417,6 +433,7 @@ export default function MyPage() {
     await loadRewardRequests(user.id);
     await loadOrders(user.id);
     await loadVerifications(user.id);
+    await loadInquiries(user.id);
 
     setLoading(false);
   };
@@ -1172,6 +1189,64 @@ export default function MyPage() {
 
                     <p className="text-xs text-slate-500">
                       {new Date(request.created_at).toLocaleDateString("ko-KR")}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          <div className="mt-8 rounded-2xl bg-slate-900 p-6 text-left">
+            <h2 className="mb-4 text-xl font-bold text-white">
+              문의 내역
+            </h2>
+          
+            {inquiries.length === 0 ? (
+              <p className="text-slate-400">
+                등록한 문의가 없습니다.
+              </p>
+            ) : (
+              <div className="space-y-4">
+                {inquiries.map((item) => (
+                  <div
+                    key={item.id}
+                    className="rounded-xl border border-white/10 bg-white/5 p-4"
+                  >
+                    <p className="font-bold text-white">
+                      {item.title}
+                    </p>
+          
+                    <p className="text-sm text-slate-300">
+                      분류: {item.category}
+                    </p>
+          
+                    <p className="mt-2 whitespace-pre-line text-slate-300">
+                      {item.content}
+                    </p>
+          
+                    <p
+                      className={`mt-3 font-bold ${
+                        item.status === "답변완료"
+                          ? "text-green-400"
+                          : "text-yellow-400"
+                      }`}
+                    >
+                      {item.status}
+                    </p>
+          
+                    {item.answer && (
+                      <div className="mt-3 rounded-lg bg-green-900/30 p-3">
+                        <p className="font-bold text-green-300">
+                          관리자 답변
+                        </p>
+          
+                        <p className="mt-2 whitespace-pre-line text-white">
+                          {item.answer}
+                        </p>
+                      </div>
+                    )}
+          
+                    <p className="mt-2 text-xs text-slate-500">
+                      {new Date(item.created_at).toLocaleDateString("ko-KR")}
                     </p>
                   </div>
                 ))}
