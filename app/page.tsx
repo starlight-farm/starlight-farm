@@ -17,7 +17,7 @@ export default function Home() {
               🐄 화순 목장에서 직접 생산
             </div>
 
-            <h1 className="mb-5 max-w-2xl text-3xl font-black leading-[1.18] tracking-[-0.04em] text-slate-950 sm:text-4xl md:text-6xl">
+            <h1 className="mb-5 max-w-2xl text-3xl font-black leading-[1.18] tracking-[-0.04em] text-slate-950 sm:text-4xl md:text-5xl lg:text-6xl">
             화순 목장에서 만든
             <br />
             <span className="text-amber-700">

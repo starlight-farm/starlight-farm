@@ -61,8 +61,13 @@ export default function Header() {
             </>
           ) : (
             <>
-              <Link href="/login">로그인</Link>
-              <Link href="/signup">회원가입</Link>
+              <Link href="/login" onClick={() => setMenuOpen(false)}>
+                로그인
+              </Link>
+
+              <Link href="/signup" onClick={() => setMenuOpen(false)}>
+                회원가입
+              </Link>
             </>
           )}
         </nav>
