@@ -44,12 +44,25 @@ export default function SignUpPage() {
       return;
     }
 
+    const { count, error: countError } = await supabase
+      .from("profiles")
+      .select("id", { count: "exact", head: true });
+
+    if (countError) {
+      alert("회원 수 확인 실패: " + countError.message);
+      return;
+    }
+
+    const signupBonusStars = (count ?? 0) < 50 ? 20 : 0;
+
     const { error: profileError } = await supabase.from("profiles").insert({
       id: userId,
       name: name.trim(),
       phone: phone.trim(),
       address: address.trim(),
-      stars: 0,
+      stars: signupBonusStars,
+      royal_stars: 0,
+      total_stars: signupBonusStars,
     });
 
     if (profileError) {
@@ -57,7 +70,11 @@ export default function SignUpPage() {
       return;
     }
 
-    alert("회원가입 성공! 별 0개로 나의 밤하늘이 생성되었습니다.");
+    if (signupBonusStars > 0) {
+      alert("회원가입 성공! 오픈 기념 별 20개가 지급되었습니다.");
+    } else {
+      alert("회원가입 성공! 나의 밤하늘이 생성되었습니다.");
+    }
     window.location.href = "/login";
   };
 
@@ -88,19 +105,28 @@ export default function SignUpPage() {
           나만의 밤하늘을 만들어보세요 ✨
         </p>
 
-        <div className="mb-6 rounded-2xl bg-yellow-400/10 p-4 text-center">
+        <div className="mb-6 rounded-2xl border border-yellow-400/30 bg-yellow-400/10 p-5 text-center">
           <p className="font-bold text-yellow-300">
-            ⭐ 회원 혜택
+            🎉 오픈 기념 이벤트
           </p>
 
-          <p className="mt-2 text-sm text-slate-300">
-            구매 인증 시 별 적립
-            <br />
-            회원 혜택
-            구매 인증 시 별 적립
-            별 40개 모으면 요거트 1L 무료 교환
-            (배송비 별도)
+          <p className="mt-2 text-2xl font-black text-white">
+            선착순 50명
           </p>
+
+          <p className="mt-1 text-lg font-bold text-yellow-300">
+            회원가입 시 별 20개 지급
+          </p>
+
+          <div className="mt-4 space-y-2 text-sm text-slate-300">
+            <p>🥛 500ml 구매 인증 시 별 1개 적립</p>
+            <p>🍶 1L 구매 인증 시 별 2개 적립</p>
+            <p>🌙 적립한 별로 나만의 밤하늘 꾸미기</p>
+            <p>🎁 별 40개 모으면 요거트 1L 교환</p>
+            <p className="text-xs text-slate-500">
+              ※ 무료 교환 상품은 배송비가 별도 발생할 수 있습니다.
+            </p>
+          </div>
         </div>
 
         <form onSubmit={handleSignUp} className="space-y-4">

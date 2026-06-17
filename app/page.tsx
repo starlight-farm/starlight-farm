@@ -4,27 +4,44 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { supabase } from "../lib/supabase";
 
 export default function Home() {
   const [showBetaPopup, setShowBetaPopup] = useState(false);
+  const [showSignupPopup, setShowSignupPopup] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const hiddenUntil = localStorage.getItem("betaPopupHide");
-
-    if (!hiddenUntil) {
-      setShowBetaPopup(true);
-      return;
-    }
-
-    if (Date.now() > Number(hiddenUntil)) {
-      setShowBetaPopup(true);
-    }
+    const checkLoginAndPopup = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+  
+      const loggedIn = !!user;
+      setIsLoggedIn(loggedIn);
+  
+      const hiddenUntil = localStorage.getItem("betaPopupHide");
+  
+      if (!hiddenUntil) {
+        setShowBetaPopup(true);
+        return;
+      }
+  
+      if (Date.now() > Number(hiddenUntil)) {
+        setShowBetaPopup(true);
+      }
+    };
+  
+    checkLoginAndPopup();
   }, []);
 
   const closePopup = () => {
     setShowBetaPopup(false);
+  
+    if (!isLoggedIn) {
+      setShowSignupPopup(true);
+    }
   };
-
   const hideToday = () => {
     const sevenDays =
       Date.now() + 1000 * 60 * 60 * 24 * 7;
@@ -35,6 +52,10 @@ export default function Home() {
     );
 
     setShowBetaPopup(false);
+
+    if (!isLoggedIn) {
+      setShowSignupPopup(true);
+    }
   };
   return (
     <main className="min-h-screen bg-[#FFF8EC] text-slate-900">
@@ -85,6 +106,89 @@ export default function Home() {
               >
                 확인
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showSignupPopup && (
+        <div className="fixed inset-0 z-[9998] flex items-center justify-center bg-black/60 p-4">
+          <div className="relative w-full max-w-md rounded-3xl bg-white p-8 text-center shadow-2xl">
+            <button
+              onClick={() => setShowSignupPopup(false)}
+              className="absolute right-5 top-5 text-2xl font-bold text-slate-400 hover:text-slate-900"
+            >
+              ×
+            </button>
+
+            <img
+              src="/images/byulbit.png"
+              alt="별빛이"
+              className="mx-auto mb-4 h-28 w-28 object-contain"
+            />
+
+            <p className="mb-2 text-sm font-bold text-amber-700">
+              별빛목장 회원 혜택
+            </p>
+
+            <h2 className="mb-4 text-2xl font-black text-slate-950">
+              별을 모으려면 회원가입이 필요해요!
+            </h2>
+            <div className="mb-5 rounded-2xl border border-yellow-300 bg-yellow-50 p-4">
+              <p className="text-sm font-bold text-amber-700">
+                🎉 오픈 기념 이벤트
+              </p>
+
+              <p className="mt-2 text-xl font-black text-slate-950">
+                선착순 회원 50명까지
+                <br />
+                회원가입 시 별 20개 적립!
+              </p>
+
+              <p className="mt-2 text-xs text-slate-500">
+                적립된 별은 마이페이지의 나만의 밤하늘에서 확인할 수 있어요.
+              </p>
+            </div>
+            <p className="mb-6 text-sm leading-6 text-slate-600">
+              스마트스토어 구매 후 인증하면 별이 적립됩니다.
+              <br />
+              500ml는 별 1개, 1L는 별 2개가 쌓이고,
+              <br />
+              별 40개를 모으면 요거트 1L로 교환할 수 있어요.
+            </p>
+
+            <div className="mb-6 grid gap-2 text-left text-sm">
+              <div className="rounded-xl bg-yellow-50 p-3 font-bold text-slate-800">
+                🥛 500ml 구매 인증 시 별 1개 적립
+              </div>
+
+              <div className="rounded-xl bg-yellow-50 p-3 font-bold text-slate-800">
+                🍶 1L 구매 인증 시 별 2개 적립
+              </div>
+
+              <div className="rounded-xl bg-yellow-50 p-3 font-bold text-slate-800">
+                🌙 적립한 별로 나만의 밤하늘 꾸미기
+              </div>
+
+              <div className="rounded-xl bg-yellow-50 p-3 font-bold text-slate-800">
+                🎁 별 40개로 요거트 1L 교환
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowSignupPopup(false)}
+                className="flex-1 rounded-xl border border-slate-300 py-3 font-bold text-slate-700"
+              >
+                나중에 하기
+              </button>
+
+              <Link
+                href="/signup"
+                className="flex-1 rounded-xl bg-yellow-400 py-3 font-bold text-slate-950 hover:bg-yellow-300"
+              >
+                회원가입 하기
+              </Link>
             </div>
           </div>
         </div>
@@ -248,99 +352,138 @@ export default function Home() {
         </div>
       </section>
 
-      {/* PRODUCTS */}
-      <section id="products" className="mx-auto max-w-6xl px-6 py-16">
-        <h2 className="mb-10 text-center text-4xl font-black">대표 제품</h2>
+            {/* PRODUCTS */}
+            <section id="products" className="mx-auto max-w-6xl px-6 py-16">
+        <p className="mb-3 text-center text-sm font-bold text-amber-700">
+          구매 인증 시 별 적립
+        </p>
+
+        <h2 className="mb-4 text-center text-4xl font-black">대표 제품</h2>
+
+        <p className="mb-10 text-center text-slate-600">
+          500ml는 별 1개, 1L는 별 2개가 적립됩니다.
+        </p>
 
         <div className="grid gap-8 md:grid-cols-2">
+          <div className="overflow-hidden rounded-3xl border border-amber-100 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+            <img
+              src="/images/plain-yogurt.jpg"
+              alt="플레인 요거트"
+              className="h-72 w-full bg-white object-contain p-4"
+            />
 
-        <div className="overflow-hidden rounded-3xl border border-amber-100 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
-          <img
-            src="/images/plain-yogurt.jpg"
-            alt="플레인 요거트"
-            className="h-72 w-full bg-white object-contain p-4"
-          />
+            <div className="p-7">
+              <div className="mb-3 inline-flex rounded-full bg-yellow-100 px-3 py-1 text-sm font-bold text-amber-700">
+                ⭐ 500ml / 1L 구매 인증 시 별 적립
+              </div>
 
-          <div className="p-7">
-            <div className="mb-3 inline-flex rounded-full bg-yellow-100 px-3 py-1 text-sm font-bold text-amber-700">
-              ⭐ 1L 구매 인증 시 별 2개 적립
-            </div>
+              <h3 className="mb-3 text-2xl font-black">플레인 요거트</h3>
 
-            <h3 className="mb-2 text-2xl font-black">
-              플레인 요거트 1,000ml
-            </h3>
+              <p className="mb-5 text-slate-500">
+                무항생제 원유의 진한 풍미를 그대로 담은 기본 요거트입니다.
+              </p>
 
-            <p className="mb-4 text-slate-500">
-              무항생제 원유의 진한 풍미를 그대로 담은 기본 요거트입니다.
-            </p>
+              <div className="mb-6 grid gap-3">
+                <div className="rounded-2xl border border-amber-100 bg-[#FFF8EC] p-4">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="font-black">500ml</span>
+                    <span className="text-xl font-black">5,000원</span>
+                  </div>
+                  <p className="mt-2 text-sm font-bold text-amber-700">
+                    ⭐ 구매 인증 시 별 1개 적립
+                  </p>
+                </div>
 
-            <div className="mb-5 text-3xl font-black text-slate-950">
-              9,000원
-            </div>
+                <div className="rounded-2xl border border-amber-100 bg-[#FFF8EC] p-4">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="font-black">1,000ml</span>
+                    <span className="text-xl font-black">9,000원</span>
+                  </div>
+                  <p className="mt-2 text-sm font-bold text-amber-700">
+                    ⭐ 구매 인증 시 별 2개 적립
+                  </p>
+                </div>
+              </div>
 
-            <div className="grid gap-3">
-              <Link
-                href="/products/plain"
-                className="rounded-xl bg-yellow-400 py-3 text-center font-black text-slate-950 hover:bg-yellow-300"
-              >
-                제품 자세히 보기
-              </Link>
+              <div className="grid gap-3">
+                <Link
+                  href="/products/plain"
+                  className="rounded-xl bg-yellow-400 py-3 text-center font-black text-slate-950 hover:bg-yellow-300"
+                >
+                  제품 자세히 보기
+                </Link>
 
-              <a
-                href="https://smartstore.naver.com/starlight-farm"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-xl border border-slate-300 bg-white py-3 text-center font-bold text-slate-900 hover:bg-slate-50"
-              >
-                스마트스토어 구매
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div className="overflow-hidden rounded-3xl border border-amber-100 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
-          <img
-            src="/images/blueberry-yogurt.jpg"
-            alt="블루베리 요거트"
-            className="h-72 w-full bg-white object-contain p-4"
-          />
-
-          <div className="p-7">
-            <div className="mb-3 inline-flex rounded-full bg-yellow-100 px-3 py-1 text-sm font-bold text-amber-700">
-              ⭐ 1L 구매 인증 시 별 2개 적립
-            </div>
-
-            <h3 className="mb-2 text-2xl font-black">
-              블루베리 요거트 1,000ml
-            </h3>
-
-            <p className="mb-4 text-slate-500">
-              무항생제 원유와 달콤한 블루베리의 풍미를 담은 블루베리 요거트입니다.
-            </p>
-
-            <div className="mb-5 text-3xl font-black text-slate-950">
-              10,000원
-            </div>
-
-            <div className="grid gap-3">
-              <Link
-                href="/products/blueberry"
-                className="rounded-xl bg-yellow-400 py-3 text-center font-black text-slate-950 hover:bg-yellow-300"
-              >
-                제품 자세히 보기
-              </Link>
-
-              <a
-                href="https://smartstore.naver.com/starlight-farm"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-xl border border-slate-300 bg-white py-3 text-center font-bold text-slate-900 hover:bg-slate-50"
-              >
-                스마트스토어 구매
-              </a>
+                <a
+                  href="https://smartstore.naver.com/starlight-farm"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-xl border border-slate-300 bg-white py-3 text-center font-bold text-slate-900 hover:bg-slate-50"
+                >
+                  스마트스토어 구매
+                </a>
+              </div>
             </div>
           </div>
-        </div>
+
+          <div className="overflow-hidden rounded-3xl border border-amber-100 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+            <img
+              src="/images/blueberry-yogurt.jpg"
+              alt="블루베리 요거트"
+              className="h-72 w-full bg-white object-contain p-4"
+            />
+
+            <div className="p-7">
+              <div className="mb-3 inline-flex rounded-full bg-yellow-100 px-3 py-1 text-sm font-bold text-amber-700">
+                ⭐ 500ml / 1L 구매 인증 시 별 적립
+              </div>
+
+              <h3 className="mb-3 text-2xl font-black">블루베리 요거트</h3>
+
+              <p className="mb-5 text-slate-500">
+                무항생제 원유와 달콤한 블루베리의 풍미를 담은 블루베리 요거트입니다.
+              </p>
+
+              <div className="mb-6 grid gap-3">
+                <div className="rounded-2xl border border-amber-100 bg-[#FFF8EC] p-4">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="font-black">500ml</span>
+                    <span className="text-xl font-black">6,000원</span>
+                  </div>
+                  <p className="mt-2 text-sm font-bold text-amber-700">
+                    ⭐ 구매 인증 시 별 1개 적립
+                  </p>
+                </div>
+
+                <div className="rounded-2xl border border-amber-100 bg-[#FFF8EC] p-4">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="font-black">1,000ml</span>
+                    <span className="text-xl font-black">10,000원</span>
+                  </div>
+                  <p className="mt-2 text-sm font-bold text-amber-700">
+                    ⭐ 구매 인증 시 별 2개 적립
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid gap-3">
+                <Link
+                  href="/products/blueberry"
+                  className="rounded-xl bg-yellow-400 py-3 text-center font-black text-slate-950 hover:bg-yellow-300"
+                >
+                  제품 자세히 보기
+                </Link>
+
+                <a
+                  href="https://smartstore.naver.com/starlight-farm"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-xl border border-slate-300 bg-white py-3 text-center font-bold text-slate-900 hover:bg-slate-50"
+                >
+                  스마트스토어 구매
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
