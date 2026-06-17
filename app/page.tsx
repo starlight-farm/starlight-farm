@@ -177,7 +177,7 @@ export default function Home() {
           <img
             src="/images/plain-yogurt.jpg"
             alt="플레인 요거트"
-            className="h-80 w-full object-cover"
+            className="h-72 w-full bg-white object-contain p-4"
           />
 
           <div className="p-7">
@@ -221,7 +221,7 @@ export default function Home() {
           <img
             src="/images/blueberry-yogurt.jpg"
             alt="블루베리 요거트"
-            className="h-80 w-full object-cover"
+            className="h-72 w-full bg-white object-contain p-4"
           />
 
           <div className="p-7">
