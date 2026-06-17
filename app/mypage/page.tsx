@@ -165,7 +165,6 @@ export default function MyPage() {
     key: string
   ) => {
     e.preventDefault();
-    e.stopPropagation();
   
     setDragging(key);
     setHasMoved(false);
