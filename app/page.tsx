@@ -1,13 +1,94 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 export default function Home() {
+  const [showBetaPopup, setShowBetaPopup] = useState(false);
+
+  useEffect(() => {
+    const hiddenUntil = localStorage.getItem("betaPopupHide");
+
+    if (!hiddenUntil) {
+      setShowBetaPopup(true);
+      return;
+    }
+
+    if (Date.now() > Number(hiddenUntil)) {
+      setShowBetaPopup(true);
+    }
+  }, []);
+
+  const closePopup = () => {
+    setShowBetaPopup(false);
+  };
+
+  const hideToday = () => {
+    const sevenDays =
+      Date.now() + 1000 * 60 * 60 * 24 * 7;
+
+    localStorage.setItem(
+      "betaPopupHide",
+      sevenDays.toString()
+    );
+
+    setShowBetaPopup(false);
+  };
   return (
     <main className="min-h-screen bg-[#FFF8EC] text-slate-900">
       <Header />
+      {showBetaPopup && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 p-4">
+          <div className="w-full max-w-md rounded-3xl bg-white p-8 text-center shadow-2xl">
+
+            <img
+              src="/images/byulbit.png"
+              alt="별빛이"
+              className="mx-auto mb-4 h-28 w-28 object-contain"
+            />
+
+            <p className="mb-2 text-sm font-bold text-amber-700">
+              BETA SERVICE
+            </p>
+
+            <h2 className="mb-4 text-2xl font-black text-slate-950">
+              🌟 별빛목장 베타 홈페이지
+            </h2>
+
+            <p className="mb-6 whitespace-pre-line text-sm leading-6 text-slate-600">
+              안녕하세요. 별빛목장입니다.
+
+              현재 홈페이지는 베타(Beta) 테스트 기간으로
+              기능 개선 및 안정화 작업이 진행 중입니다.
+
+              일부 기능은 변경될 수 있으며
+              회원 정보, 별 적립 내역,
+              구매 인증 내역 등이 초기화될 수 있습니다.
+
+              더 좋은 서비스를 위해
+              지속적으로 개선하고 있습니다.
+            </p>
+
+            <div className="flex gap-3">
+              <button
+                onClick={hideToday}
+                className="flex-1 rounded-xl border border-slate-300 py-3 font-bold"
+              >
+                7일간 보지 않기
+              </button>
+
+              <button
+                onClick={closePopup}
+                className="flex-1 rounded-xl bg-yellow-400 py-3 font-bold text-slate-950"
+              >
+                확인
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* HERO */}
       <section className="mx-auto max-w-6xl px-4 py-12 md:px-6 md:py-20">
