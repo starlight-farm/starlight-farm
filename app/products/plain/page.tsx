@@ -17,7 +17,7 @@ export default function PlainYogurtPage() {
         </div>
 
         <div>
-          <p className="mb-4 text-sm font-bold text-yellow-300">
+          <p className="mb-4 text-sm font-bold text-amber-700">
             HACCP 인증 · 무항생제 원유
           </p>
 
@@ -79,33 +79,228 @@ export default function PlainYogurtPage() {
       </section>
 
       <section className="mx-auto max-w-6xl px-6 py-12">
-        <h2 className="mb-8 text-3xl font-bold">제품 정보</h2>
+        <h2 className="mb-8 text-4xl font-black text-center">
+          제품 정보
+        </h2>
 
-        <div className="grid gap-6 md:grid-cols-3">
-        <div className="rounded-3xl border border-amber-100 bg-white p-8 shadow-sm">
-            <div className="mb-4 text-4xl">🐄</div>
-            <h3 className="mb-3 text-xl font-bold">직접 생산한 원유</h3>
-            <p className="text-sm leading-relaxed text-slate-600">
-              목장에서 직접 생산한 신선한 원유를 사용합니다.
-            </p>
+        <div className="grid gap-8 lg:grid-cols-2">
+          <div className="rounded-3xl border border-amber-100 bg-white p-8 shadow-sm">
+            <h3 className="mb-6 text-2xl font-black">
+              기본 정보
+            </h3>
+
+            <div className="space-y-4">
+              <div className="flex justify-between border-b pb-3">
+                <span className="font-bold">식품유형</span>
+                <span>농후발효유</span>
+              </div>
+
+              <div className="flex justify-between border-b pb-3">
+                <span className="font-bold">원유 함량</span>
+                <span>96.9%</span>
+              </div>
+
+              <div className="flex justify-between border-b pb-3">
+                <span className="font-bold">보관방법</span>
+                <span>냉장보관 (0~10℃)</span>
+              </div>
+
+              <div className="flex justify-between border-b pb-3">
+                <span className="font-bold">소비기한</span>
+                <span>제조일로부터 35일</span>
+              </div>
+
+              <div className="flex justify-between border-b pb-3">
+                <span className="font-bold">포장재질</span>
+                <span>PET / HDPE</span>
+              </div>
+
+              <div className="flex justify-between border-b pb-3">
+                <span className="font-bold">제조원</span>
+                <span>별빛목장</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span className="font-bold">고객센터</span>
+                <span>061-870-8871</span>
+              </div>
+            </div>
           </div>
 
           <div className="rounded-3xl border border-amber-100 bg-white p-8 shadow-sm">
-            <div className="mb-4 text-4xl">🥣</div>
-            <h3 className="mb-3 text-xl font-bold">진하고 부드러운 맛</h3>
-            <p className="text-sm leading-relaxed text-slate-600">
-              담백하고 부드러운 플레인 요거트 본연의 맛을 느낄 수 있습니다.
-            </p>
-          </div>
+            <h3 className="mb-6 text-2xl font-black">
+              원재료
+            </h3>
 
-          <div className="rounded-3xl border border-amber-100 bg-white p-8 shadow-sm">
-            <div className="mb-4 text-4xl">🚚</div>
-            <h3 className="mb-3 text-xl font-bold">신선 배송</h3>
-            <p className="text-sm leading-relaxed text-slate-600">
-              냉장 상태로 신선하게 배송됩니다.
-            </p>
+            <div className="space-y-4 text-lg">
+              <p>
+                🥛 원유 96.9%
+                <br />
+                <span className="text-sm text-slate-500">
+                  (국산, 별빛목장)
+                </span>
+              </p>
+
+              <p>
+                🍬 정백당 3%
+              </p>
+
+              <p>
+                🦠 유산균
+              </p>
+            </div>
           </div>
         </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-6 py-12">
+        <h2 className="mb-8 text-center text-4xl font-black">
+          영양정보
+        </h2>
+
+        <p className="mb-8 text-center text-slate-500">
+          100ml 기준
+        </p>
+
+        <div className="mx-auto max-w-3xl overflow-hidden rounded-3xl border border-amber-100 bg-white shadow-sm">
+          <div className="grid grid-cols-2 border-b">
+            <div className="p-4 font-bold">열량</div>
+            <div className="p-4 text-right">77.6 kcal</div>
+          </div>
+
+          <div className="grid grid-cols-2 border-b">
+            <div className="p-4 font-bold">탄수화물</div>
+            <div className="p-4 text-right">8.3 g</div>
+          </div>
+
+          <div className="grid grid-cols-2 border-b">
+            <div className="p-4 font-bold">당류</div>
+            <div className="p-4 text-right">6.6 g</div>
+          </div>
+
+          <div className="grid grid-cols-2 border-b">
+            <div className="p-4 font-bold">단백질</div>
+            <div className="p-4 text-right">3.0 g</div>
+          </div>
+
+          <div className="grid grid-cols-2 border-b">
+            <div className="p-4 font-bold">지방</div>
+            <div className="p-4 text-right">3.6 g</div>
+          </div>
+
+          <div className="grid grid-cols-2 border-b">
+            <div className="p-4 font-bold">나트륨</div>
+            <div className="p-4 text-right">53 mg</div>
+          </div>
+
+          <div className="grid grid-cols-2">
+            <div className="p-4 font-bold">콜레스테롤</div>
+            <div className="p-4 text-right">12.4 mg</div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-6 py-12">
+        <h2 className="mb-8 text-center text-4xl font-black">
+          별빛목장 플레인 요거트 특징
+        </h2>
+
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-5">
+          {[
+            {
+              icon: "🥛",
+              title: "무항생제 원유",
+              desc: "안전하고 깨끗한 원유 사용",
+            },
+            {
+              icon: "🏅",
+              title: "체세포수 1등급",
+              desc: "건강한 젖소에서 생산",
+            },
+            {
+              icon: "✨",
+              title: "세균수 1A등급",
+              desc: "위생적으로 관리된 원유",
+            },
+            {
+              icon: "🏭",
+              title: "HACCP 인증",
+              desc: "안전한 제조시설 생산",
+            },
+            {
+              icon: "🐄",
+              title: "목장 직영",
+              desc: "원유 생산부터 제조까지",
+            },
+          ].map((item) => (
+            <div
+              key={item.title}
+              className="rounded-3xl border border-amber-100 bg-white p-6 text-center shadow-sm"
+            >
+              <div className="mb-3 text-4xl">
+                {item.icon}
+              </div>
+
+              <h3 className="mb-2 font-black">
+                {item.title}
+              </h3>
+
+              <p className="text-sm text-slate-500">
+                {item.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="bg-slate-950 py-16 text-white">
+        <div className="mx-auto max-w-5xl px-6">
+          <h2 className="mb-8 text-center text-4xl font-black">
+            회원 혜택
+          </h2>
+
+          <div className="grid gap-4 md:grid-cols-3">
+            <div className="rounded-3xl bg-white/10 p-6 text-center">
+              <div className="mb-3 text-4xl">🥛</div>
+              <h3 className="font-black">
+                500ml 구매 인증
+              </h3>
+              <p className="mt-2 text-yellow-300">
+                ⭐ 별 1개 적립
+              </p>
+            </div>
+
+            <div className="rounded-3xl bg-white/10 p-6 text-center">
+              <div className="mb-3 text-4xl">🍶</div>
+              <h3 className="font-black">
+                1L 구매 인증
+              </h3>
+              <p className="mt-2 text-yellow-300">
+                ⭐⭐ 별 2개 적립
+              </p>
+            </div>
+
+            <div className="rounded-3xl bg-white/10 p-6 text-center">
+              <div className="mb-3 text-4xl">🎁</div>
+              <h3 className="font-black">
+                별 40개 달성
+              </h3>
+              <p className="mt-2 text-yellow-300">
+                요거트 1L 교환
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-6 py-16 text-center">
+        <h2 className="mb-4 text-4xl font-black">
+          신선한 국내산 원유만 사용하여
+        </h2>
+
+        <p className="text-xl text-slate-600">
+          정직하고 건강한 요거트를 만듭니다.
+        </p>
       </section>
 
       <Footer />
