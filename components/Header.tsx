@@ -33,7 +33,7 @@ export default function Header() {
         </Link>
 
         {/* PC 메뉴 */}
-        <nav className="hidden items-center gap-5 text-sm font-bold text-white md:flex">
+        <nav className="hidden items-center gap-5 text-sm font-bold text-white lg:flex">
           <Link href="/">홈</Link>
           <Link href="/products">제품소개</Link>
           <Link href="/about">목장소개</Link>
@@ -70,14 +70,14 @@ export default function Header() {
         {/* 모바일 버튼 */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          className="text-3xl md:hidden"
+          className="text-3xl lg:hidden"
         >
           ☰
         </button>
         </div>
 
         {menuOpen && (
-          <div className="border-t border-white/10 bg-slate-950 md:hidden">
+          <div className="border-t border-white/10 bg-slate-950 lg:hidden">
             <div className="flex flex-col gap-4 p-5 text-white">
 
               <Link href="/" onClick={() => setMenuOpen(false)}>
