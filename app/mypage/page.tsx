@@ -160,24 +160,34 @@ export default function MyPage() {
     }
   };
 
-  const handleMouseDown = (key: string) => {
+  const handlePointerDown = (
+    e: React.PointerEvent<HTMLSpanElement>,
+    key: string
+  ) => {
+    e.preventDefault();
+    e.stopPropagation();
+  
     setDragging(key);
     setHasMoved(false);
+  
+    e.currentTarget.setPointerCapture(e.pointerId);
   };
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!dragging || !skyRef.current) return;
-
+  
+    e.preventDefault();
+  
     setHasMoved(true);
-
+  
     const rect = skyRef.current.getBoundingClientRect();
-
+  
     const left = ((e.clientX - rect.left) / rect.width) * 100;
     const top = ((e.clientY - rect.top) / rect.height) * 100;
-
+  
     const fixedLeft = Math.max(2, Math.min(98, left));
     const fixedTop = Math.max(2, Math.min(98, top));
-
+  
     savePositions({
       ...positions,
       [dragging]: {
@@ -186,12 +196,12 @@ export default function MyPage() {
       },
     });
   };
-
-  const handleMouseUp = () => {
+  
+  const handlePointerUp = () => {
     if (dragging) {
       saveSkyToSupabase(positions, connections);
     }
-
+  
     setDragging(null);
   };
 
@@ -698,11 +708,11 @@ export default function MyPage() {
 
           <div
             ref={skyRef}
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleMouseUp}
-            onMouseLeave={handleMouseUp}
-            className="relative mb-4 h-[460px] overflow-hidden rounded-3xl border border-blue-400/30 bg-[#020617] shadow-[0_0_40px_rgba(59,130,246,0.25)] select-none"
-          >
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
+            onPointerLeave={handlePointerUp}
+            className="relative mb-4 h-[460px] overflow-hidden rounded-3xl border border-blue-400/30 bg-[#020617] shadow-[0_0_40px_rgba(59,130,246,0.25)] select-none touch-none"
+            >
             {totalStars >= 100 && totalStars < 500 && (
               <>
                 <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(59,130,246,0.28),transparent_25%),radial-gradient(circle_at_70%_35%,rgba(168,85,247,0.35),transparent_30%),radial-gradient(circle_at_50%_75%,rgba(236,72,153,0.18),transparent_35%)]" />
@@ -840,7 +850,7 @@ export default function MyPage() {
               return (
                 <span
                   key={key}
-                  onMouseDown={() => handleMouseDown(key)}
+                  onPointerDown={(e) => handlePointerDown(e, key)}
                   onClick={() => handleStarClick(key)}
                   className={`absolute z-20 -translate-x-1/2 -translate-y-1/2 cursor-grab text-[11px] active:cursor-grabbing ${
                     isSelected
@@ -866,7 +876,7 @@ export default function MyPage() {
               return (
                 <span
                   key={key}
-                  onMouseDown={() => handleMouseDown(key)}
+                  onPointerDown={(e) => handlePointerDown(e, key)}
                   onClick={() => handleStarClick(key)}
                   className={`absolute z-30 -translate-x-1/2 -translate-y-1/2 cursor-grab active:cursor-grabbing ${
                     isSelected
