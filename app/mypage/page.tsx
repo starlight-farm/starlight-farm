@@ -51,15 +51,25 @@ export default function MyPage() {
     return "별빛 새싹";
   };
   
-  const defaultSmallPosition = (index: number) => ({
-    top: ((index * 37) % 88) + 6,
-    left: ((index * 53) % 88) + 6,
-  });
-
-  const defaultRoyalPosition = (index: number) => ({
-    top: ((index * 29) % 76) + 10,
-    left: ((index * 41) % 76) + 10,
-  });
+  const defaultSmallPosition = (index: number) => {
+    const row = Math.floor(index / 10);
+    const col = index % 10;
+  
+    return {
+      top: 22 + row * 4,
+      left: 30 + col * 4,
+    };
+  };
+  
+  const defaultRoyalPosition = (index: number) => {
+    const row = Math.floor(index / 5);
+    const col = index % 5;
+  
+    return {
+      top: 14 + row * 6,
+      left: 38 + col * 6,
+    };
+  };
 
   const getPosition = (key: string, type: "small" | "royal", index: number) => {
     if (positions[key]) return positions[key];
@@ -1060,7 +1070,7 @@ export default function MyPage() {
               <input
                 value={orderNumber}
                 onChange={(e) => setOrderNumber(e.target.value)}
-                placeholder="스마트스토어 주문번호"
+                placeholder="스마트스토어 주문번호(끝4자리)"
                 className="w-full rounded-lg bg-slate-800 p-3 text-white"
               />
 

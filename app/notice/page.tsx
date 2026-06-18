@@ -7,13 +7,15 @@ import { supabase } from "../../lib/supabase";
 
 export default function NoticePage() {
   const [notices, setNotices] = useState<any[]>([]);
+  const [noticeImages, setNoticeImages] = useState<Record<number, any[]>>({});
   const [loading, setLoading] = useState(true);
-  const [openId, setOpenId] = useState<string | null>(null);
+  const [openId, setOpenId] = useState<number | null>(null);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const loadNotices = async () => {
     const { data, error } = await supabase
       .from("notices")
-      .select("id, title, content, created_at")
+      .select("id, title, content, image_url, created_at")
       .order("created_at", { ascending: false });
 
     if (error) {
@@ -26,8 +28,35 @@ export default function NoticePage() {
     setLoading(false);
   };
 
+  const loadNoticeImages = async () => {
+    const { data, error } = await supabase
+      .from("notice_images")
+      .select("*")
+      .order("sort_order", { ascending: true });
+
+    if (error) {
+      alert("공지 이미지 불러오기 실패: " + error.message);
+      return;
+    }
+
+    const grouped: Record<number, any[]> = {};
+
+    (data ?? []).forEach((item) => {
+      const noticeId = Number(item.notice_id);
+
+      if (!grouped[noticeId]) {
+        grouped[noticeId] = [];
+      }
+
+      grouped[noticeId].push(item);
+    });
+
+    setNoticeImages(grouped);
+  };
+
   useEffect(() => {
     loadNotices();
+    loadNoticeImages();
   }, []);
 
   return (
@@ -89,9 +118,46 @@ export default function NoticePage() {
 
                   {isOpen && (
                     <div className="border-t border-amber-100 bg-[#FFFDF7] px-5 py-6 sm:px-7">
+
+                      <p className="mb-3 text-xs text-red-500">
+                        이미지 개수: {noticeImages[Number(notice.id)]?.length ?? 0}
+                      </p>
+
+                      {noticeImages[Number(notice.id)]?.length > 0 ? (
+                        <div className="mb-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                          {noticeImages[Number(notice.id)].map((image) => (
+                            <button
+                            key={image.id}
+                            type="button"
+                            onClick={() => setSelectedImage(image.image_url)}
+                            className="block overflow-hidden rounded-2xl border border-amber-100 bg-white"
+                          >
+                            <img
+                              src={image.image_url}
+                              alt={notice.title}
+                              className="h-32 w-full object-cover sm:h-36"
+                            />
+                          </button>
+                          ))}
+                        </div>
+                      ) : notice.image_url ? (
+                        <button
+                          type="button"
+                          onClick={() => setSelectedImage(notice.image_url)}
+                          className="mb-5 block overflow-hidden rounded-2xl border border-amber-100 bg-white"
+                        >
+                          <img
+                            src={notice.image_url}
+                            alt={notice.title}
+                            className="h-56 w-full object-cover sm:h-72"
+                          />
+                        </button>
+                      ) : null}
+
                       <p className="whitespace-pre-line text-sm leading-7 text-slate-700 sm:text-base sm:leading-8">
                         {notice.content}
                       </p>
+
                     </div>
                   )}
                 </div>
@@ -100,6 +166,29 @@ export default function NoticePage() {
           </div>
         )}
       </section>
+
+      {selectedImage && (
+        <div
+          onClick={() => setSelectedImage(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+        >
+          <div className="relative max-h-[90vh] max-w-5xl">
+            <button
+              type="button"
+              onClick={() => setSelectedImage(null)}
+              className="absolute right-3 top-3 z-10 rounded-full bg-white px-4 py-2 text-sm font-bold text-slate-900"
+            >
+              닫기
+            </button>
+
+            <img
+              src={selectedImage}
+              alt="공지 이미지 확대"
+              className="max-h-[90vh] w-full rounded-2xl object-contain"
+            />
+          </div>
+        </div>
+      )}
 
       <Footer />
     </main>

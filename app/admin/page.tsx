@@ -28,6 +28,7 @@ export default function AdminPage() {
 
   const [noticeTitle, setNoticeTitle] = useState("");
   const [noticeContent, setNoticeContent] = useState("");
+  const [noticeImages, setNoticeImages] = useState<File[]>([]);
 
   const [editingNoticeId, setEditingNoticeId] = useState<number | null>(null);
   const [editTitle, setEditTitle] = useState("");
@@ -121,7 +122,7 @@ export default function AdminPage() {
   const loadNotices = async () => {
     const { data, error } = await supabase
       .from("notices")
-      .select("id, title, content, created_at")
+      .select("id, title, content, image_url, created_at")
       .order("created_at", { ascending: false });
 
     if (error) {
@@ -444,26 +445,76 @@ export default function AdminPage() {
       alert("공지 제목을 입력하세요.");
       return;
     }
-
+  
     if (!noticeContent.trim()) {
       alert("공지 내용을 입력하세요.");
       return;
     }
-
-    const { error } = await supabase.from("notices").insert({
-      title: noticeTitle,
-      content: noticeContent,
-    });
-
-    if (error) {
-      alert("공지 저장 실패: " + error.message);
+  
+    const { data: noticeData, error: noticeError } = await supabase
+      .from("notices")
+      .insert({
+        title: noticeTitle,
+        content: noticeContent,
+        image_url: null,
+      })
+      .select("id")
+      .single();
+  
+    if (noticeError) {
+      alert("공지 저장 실패: " + noticeError.message);
       return;
     }
+  
+    if (noticeImages.length > 0) {
+      for (let i = 0; i < noticeImages.length; i++) {
+        const file = noticeImages[i];
+        const extension = file.name.split(".").pop();
 
+        const fileName =
+          `${Date.now()}-${i}.${extension}`;
+  
+        const { error: uploadError } = await supabase.storage
+          .from("notice-images")
+          .upload(fileName, file);
+  
+        if (uploadError) {
+          alert("이미지 업로드 실패: " + uploadError.message);
+          return;
+        }
+  
+        const { data } = supabase.storage
+          .from("notice-images")
+          .getPublicUrl(fileName);
+  
+          const { error: imageInsertError } = await supabase
+          .from("notice_images")
+          .insert({
+            notice_id: noticeData.id,
+            image_url: data.publicUrl,
+            sort_order: i,
+          });
+        
+        if (imageInsertError) {
+          alert("공지 이미지 저장 실패: " + imageInsertError.message);
+          return;
+        }
+  
+        if (i === 0) {
+          await supabase
+            .from("notices")
+            .update({ image_url: data.publicUrl })
+            .eq("id", noticeData.id);
+        }
+      }
+    }
+  
     setNoticeTitle("");
     setNoticeContent("");
+    setNoticeImages([]);
+  
     await loadNotices();
-
+  
     alert("공지 저장 완료!");
   };
 
@@ -889,6 +940,16 @@ export default function AdminPage() {
           className="mb-4 w-full rounded-lg bg-slate-800 p-3 text-white outline-none placeholder:text-slate-500"
         />
 
+        <input
+          type="file"
+          multiple
+          accept="image/*"
+          onChange={(e) =>
+            setNoticeImages(Array.from(e.target.files ?? []))
+          }
+          className="mb-4 w-full rounded-lg bg-slate-800 p-3 text-white"
+        />
+
         <button
           onClick={saveNotice}
           className="rounded-lg bg-pink-500 px-5 py-3 font-bold text-white hover:bg-pink-400"
@@ -947,6 +1008,14 @@ export default function AdminPage() {
                     </p>
 
                     <h3 className="mt-1 text-lg font-bold">{notice.title}</h3>
+
+                    {notice.image_url && (
+                      <img
+                        src={notice.image_url}
+                        alt={notice.title}
+                        className="mt-3 mb-3 max-h-64 rounded-xl"
+                      />
+                    )}
 
                     <p className="mt-2 whitespace-pre-line text-sm text-slate-300">
                       {notice.content}
