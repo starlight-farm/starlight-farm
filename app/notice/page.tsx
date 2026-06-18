@@ -8,6 +8,7 @@ import { supabase } from "../../lib/supabase";
 export default function NoticePage() {
   const [notices, setNotices] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [openId, setOpenId] = useState<string | null>(null);
 
   const loadNotices = async () => {
     const { data, error } = await supabase
@@ -33,15 +34,19 @@ export default function NoticePage() {
     <main className="min-h-screen bg-[#FFF8EC] text-slate-900">
       <Header />
 
-      <section className="mx-auto max-w-5xl px-6 py-20">
-        <div className="mb-12 text-center">
-        <p className="mb-3 text-sm font-bold text-amber-700">
-          Notice
-        </p>
-          <h1 className="mb-4 text-5xl font-bold">공지사항</h1>
+      <section className="mx-auto max-w-5xl px-5 py-16 sm:py-20">
+        <div className="mb-10 text-center">
+          <p className="mb-3 text-sm font-bold text-amber-700">
+            Notice
+          </p>
 
-          <p className="text-slate-600">
-            별빛목장의 새로운 소식과 배송 안내를 확인하세요.
+          <h1 className="mb-4 text-4xl font-black sm:text-5xl">
+            별빛목장 소식
+          </h1>
+
+          <p className="text-sm leading-7 text-slate-600 sm:text-base">
+            배송 안내, 이벤트, 생산 소식 등<br className="sm:hidden" />
+            별빛목장의 새로운 소식을 확인하세요.
           </p>
         </div>
 
@@ -54,23 +59,44 @@ export default function NoticePage() {
             <p className="text-slate-500">등록된 공지사항이 없습니다.</p>
           </div>
         ) : (
-          <div className="space-y-6">
-            {notices.map((notice) => (
-              <div
-                key={notice.id}
-                className="rounded-3xl border border-amber-100 bg-white p-6 shadow-sm"
-              >
-                <div className="mb-2 text-sm text-slate-400">
-                  {new Date(notice.created_at).toLocaleDateString("ko-KR")}
+          <div className="overflow-hidden rounded-3xl border border-amber-100 bg-white shadow-sm">
+            {notices.map((notice, index) => {
+              const isOpen = openId === notice.id;
+
+              return (
+                <div
+                  key={notice.id}
+                  className={index !== 0 ? "border-t border-amber-100" : ""}
+                >
+                  <button
+                    onClick={() => setOpenId(isOpen ? null : notice.id)}
+                    className="flex w-full items-center justify-between gap-4 px-5 py-5 text-left hover:bg-amber-50 sm:px-7"
+                  >
+                    <div className="min-w-0">
+                      <div className="mb-2 text-xs font-bold text-amber-700">
+                        {new Date(notice.created_at).toLocaleDateString("ko-KR")}
+                      </div>
+
+                      <h2 className="truncate text-base font-black text-slate-900 sm:text-lg">
+                        {notice.title}
+                      </h2>
+                    </div>
+
+                    <span className="shrink-0 rounded-full bg-yellow-100 px-3 py-1 text-sm font-bold text-amber-700">
+                      {isOpen ? "닫기" : "보기"}
+                    </span>
+                  </button>
+
+                  {isOpen && (
+                    <div className="border-t border-amber-100 bg-[#FFFDF7] px-5 py-6 sm:px-7">
+                      <p className="whitespace-pre-line text-sm leading-7 text-slate-700 sm:text-base sm:leading-8">
+                        {notice.content}
+                      </p>
+                    </div>
+                  )}
                 </div>
-
-                <h2 className="mb-3 text-xl font-bold">{notice.title}</h2>
-
-                <p className="whitespace-pre-line text-slate-700">
-                  {notice.content}
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </section>

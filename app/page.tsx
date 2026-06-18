@@ -262,42 +262,43 @@ export default function Home() {
             </p>
 
             <div className="mb-8 grid max-w-2xl grid-cols-1 gap-0 overflow-hidden rounded-2xl border border-amber-100 bg-white shadow-sm sm:grid-cols-2 md:grid-cols-4">
-              <div className="border-b border-r border-amber-100 p-4 md:border-b-0">
+              <div className="flex flex-col items-center justify-center border-b border-r border-amber-100 p-4 text-center md:border-b-0">
                 <div className="mb-1 text-xl">🐄</div>
-                <p className="text-sm font-black text-slate-900">
+                <p className="flex min-h-[48px] items-center text-sm font-black text-slate-900">
                   목장 직접 생산
                 </p>
-                <p className="mt-1 text-xs text-slate-500">
+                <p className="mt-1 min-h-[40px] text-xs leading-5 text-slate-700">
                   신선한 원유 사용
                 </p>
               </div>
 
-              <div className="border-b border-amber-100 p-4 md:border-b-0 md:border-r">
+              <div className="flex flex-col items-center justify-center border-b border-r border-amber-100 p-4 text-center md:border-b-0">
                 <div className="mb-1 text-xl">🥛</div>
-                <p className="text-sm font-black text-slate-900">
+                <p className="flex min-h-[48px] items-center text-sm font-black text-slate-900">
                   무항생제 원유
                 </p>
-                <p className="mt-1 text-xs text-slate-500">
+
+                <p className="mt-1 min-h-[40px] text-xs leading-5 text-slate-700">
                   안심하고 먹는 원유
                 </p>
               </div>
 
-              <div className="border-r border-amber-100 p-4">
+              <div className="flex flex-col items-center justify-center border-b border-r border-amber-100 p-4 text-center md:border-b-0">
                 <div className="mb-1 text-xl">🏭</div>
-                <p className="text-sm font-black text-slate-900">
+                <p className="flex min-h-[48px] items-center text-sm font-black text-slate-900">
                   HACCP 인증
                 </p>
-                <p className="mt-1 text-xs text-slate-500">
+                <p className="mt-1 min-h-[40px] text-xs leading-5 text-slate-700">
                   위생적인 제조시설
                 </p>
               </div>
 
-              <div className="p-4">
+              <div className="flex flex-col items-center justify-center border-b border-r border-amber-100 p-4 text-center md:border-b-0">
                 <div className="mb-1 text-xl">🚚</div>
-                <p className="text-sm font-black text-slate-900">
+                <p className="flex min-h-[48px] items-center text-sm font-black text-slate-900">
                   신선 배송
                 </p>
-                <p className="mt-1 text-xs text-slate-500">
+                <p className="mt-1 min-h-[40px] text-xs leading-5 text-slate-700">
                   신선하게 집 앞까지
                 </p>
               </div>
@@ -542,9 +543,11 @@ export default function Home() {
               나만의 밤하늘이 자랍니다
             </h2>
 
-            <p className="mb-8 leading-relaxed text-slate-300">
+            <p className="mb-8 leading-8 text-slate-300">
               스마트스토어 구매 후 인증하면 별이 적립됩니다.
+              <br />
               별을 모아 나만의 별자리를 만들고,
+              <br />
               별 40개를 모으면 요거트 1L로 교환할 수 있어요.
             </p>
 
@@ -555,10 +558,10 @@ export default function Home() {
               <div className="rounded-2xl bg-white/10 p-5">
                 🍶 1L 구매 인증 시 별 2개
               </div>
-              <div className="rounded-2xl bg-white/10 p-5 font-bold text-slate-800 sm:p-3">
+              <div className="rounded-2xl bg-white/10 p-5">
                 🎁 별 40개로 요거트 1L 교환
 
-                <p className="mt-1 text-xs font-normal text-slate-500">
+                <p className="mt-1 text-xs font-normal text-slate-300">
                   택배 발송 가능 · 배송비 별도
                 </p>
               </div>

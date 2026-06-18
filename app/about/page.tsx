@@ -278,34 +278,32 @@ export default function AboutPage() {
               별빛목장의 약속
             </h2>
 
-            <div className="space-y-6 text-lg leading-8 text-slate-600">
-              <span className="block">
+            <div className="flex flex-col justify-center text-lg leading-8 text-slate-700">
+              <p>
                 안녕하세요.<br />
                 별빛목장 대표입니다.
-              </span>
+              </p>
 
-              <span className="block">
-                별빛목장은 건강한 젖소를 직접 키우고,
+              <p className="mt-6">
+                별빛목장은 건강한 젖소를 직접 키우고,<br />
                 신선한 원유로 정직한 요거트를 만드는 목장입니다.
-              </span>
+              </p>
 
-              <span className="block">
-                좋은 요거트는 좋은 원유에서 시작된다고 믿습니다.
-                <br />
-                그래서 젖소 관리부터 착유, 생산, 포장까지
+              <p className="mt-6">
+                좋은 요거트는 좋은 원유에서 시작된다고 믿습니다.<br />
+                그래서 젖소 관리부터 착유, 생산, 포장까지<br />
                 모든 과정을 직접 살피고 있습니다.
-              </span>
+              </p>
 
-              <span className="block">
-                가족이 먹는다는 마음으로 깨끗하게 만들고,
-                <br />
-                고객 여러분께 믿고 드실 수 있는 요거트를
+              <p className="mt-6">
+                가족이 먹는다는 마음으로 깨끗하게 만들고,<br />
+                고객 여러분께 믿고 드실 수 있는 요거트를<br />
                 전해드리겠습니다.
-              </span>
+              </p>
 
-              <span className="block font-semibold text-slate-800">
+              <p className="mt-6 font-bold text-slate-900">
                 감사합니다.
-              </span>
+              </p>
             </div>
           </div>
           </div>

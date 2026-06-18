@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
 import Header from "../../components/Header";
 
@@ -10,6 +10,22 @@ export default function SignUpPage() {
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+  const [memberCount, setMemberCount] = useState(0);
+
+  useEffect(() => {
+    const loadMemberCount = async () => {
+      const { count } = await supabase
+        .from("profiles")
+        .select("id", {
+          count: "exact",
+          head: true,
+        });
+  
+      setMemberCount(count ?? 0);
+    };
+  
+    loadMemberCount();
+  }, []);
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -110,13 +126,31 @@ export default function SignUpPage() {
             🎉 오픈 기념 이벤트
           </p>
 
-          <p className="mt-2 text-2xl font-black text-white">
-            선착순 50명
-          </p>
+          {memberCount < 50 ? (
+            <>
+              <p className="mt-2 text-xs text-slate-400">
+                선착순 혜택 잔여
+              </p>
 
-          <p className="mt-1 text-lg font-bold text-yellow-300">
-            회원가입 시 별 20개 지급
-          </p>
+              <p className="text-4xl font-black text-white">
+                {50 - memberCount}명
+              </p>
+
+              <p className="mt-1 text-lg font-bold text-yellow-300">
+                회원가입 시 별 20개 지급
+              </p>
+            </>
+          ) : (
+            <>
+              <p className="mt-3 text-2xl font-black text-red-300">
+                이벤트 종료
+              </p>
+
+              <p className="mt-1 text-sm text-slate-400">
+                회원가입은 계속 가능합니다.
+              </p>
+            </>
+          )}
 
           <div className="mt-4 space-y-2 text-sm text-slate-300">
             <p>🥛 500ml 구매 인증 시 별 1개 적립</p>

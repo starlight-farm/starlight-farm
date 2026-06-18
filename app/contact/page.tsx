@@ -98,35 +98,35 @@ export default function ContactPage() {
           </p>
         </div>
 
-        <div className="mb-10 grid gap-6 md:grid-cols-2">
-          <div className="rounded-3xl border border-amber-100 bg-white p-8 shadow-sm">
-            <div className="mb-4 text-4xl">🥛</div>
-            <h2 className="mb-3 text-2xl font-black">제품 문의</h2>
-            <p className="text-slate-600">
+        <div className="mb-10 grid gap-5 md:grid-cols-2">
+          <div className="rounded-3xl border border-amber-100 bg-white p-6 shadow-sm">
+            <div className="mb-2 text-3xl">🥛</div>
+            <h2 className="mb-2 text-xl font-black">제품 문의</h2>
+            <p className="text-sm leading-6 text-slate-600">
               용량, 보관 방법, 맛, 제품 구성 등을 문의할 수 있습니다.
             </p>
           </div>
 
-          <div className="rounded-3xl border border-amber-100 bg-white p-8 shadow-sm">
-            <div className="mb-4 text-4xl">🚚</div>
-            <h2 className="mb-3 text-2xl font-black">배송 문의</h2>
-            <p className="text-slate-600">
+          <div className="rounded-3xl border border-amber-100 bg-white p-6 shadow-sm">
+            <div className="mb-2 text-3xl">🚚</div>
+            <h2 className="mb-2 text-xl font-black">배송 문의</h2>
+            <p className="text-sm leading-6 text-slate-600">
               택배 발송일, 신선 배송, 아이스박스 포장 관련 문의를 남겨주세요.
             </p>
           </div>
 
-          <div className="rounded-3xl border border-amber-100 bg-white p-8 shadow-sm">
-            <div className="mb-4 text-4xl">🏪</div>
-            <h2 className="mb-3 text-2xl font-black">입점 문의</h2>
-            <p className="text-slate-600">
+          <div className="rounded-3xl border border-amber-100 bg-white p-6 shadow-sm">
+            <div className="mb-2 text-3xl">🏪</div>
+            <h2 className="mb-2 text-xl font-black">입점 문의</h2>
+            <p className="text-sm leading-6 text-slate-600">
               로컬푸드, 마트, 온라인몰 입점 및 납품 문의가 가능합니다.
             </p>
           </div>
 
-          <div className="rounded-3xl border border-amber-100 bg-white p-8 shadow-sm">
-            <div className="mb-4 text-4xl">🎁</div>
-            <h2 className="mb-3 text-2xl font-black">별 적립 문의</h2>
-            <p className="text-slate-600">
+          <div className="rounded-3xl border border-amber-100 bg-white p-6 shadow-sm">
+            <div className="mb-2 text-3xl">🎁</div>
+            <h2 className="mb-2 text-xl font-black">별 적립 문의</h2>
+            <p className="text-sm leading-6 text-slate-600">
               구매 인증, 별 적립, 요거트 교환 관련 문의를 남겨주세요.
             </p>
           </div>
