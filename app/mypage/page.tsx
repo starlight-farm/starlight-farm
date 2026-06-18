@@ -103,6 +103,13 @@ export default function MyPage() {
   ) => {
     if (!userId) return;
 
+    const newShareId =
+      shareId ||
+      `${userId}-${Date.now()}`
+        .replaceAll("-", "")
+        .replaceAll("_", "")
+        .replaceAll(".", "");
+
     const { error } = await supabase.from("user_sky").upsert({
       user_id: userId,
       positions,
