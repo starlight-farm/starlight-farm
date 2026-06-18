@@ -16,6 +16,7 @@ export const metadata: Metadata = {
   title: "별빛목장 | 화순 무항생제 원유 수제 요거트",
   description: "화순에서 직접 생산한 무항생제 원유로 만드는 별빛목장 수제 요거트. HACCP 인증 생산시설에서 정성껏 제조합니다.",
   verification: {
+    google: "o83NpK2DTSVBdOm5wYwDcwy-XDYFHsETYBLP6GJIR1A",
     other: {
       "naver-site-verification":
         "c883ce9d94db03d483cd514b723957b3a73fed7f",
