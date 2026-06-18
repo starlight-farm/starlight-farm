@@ -32,7 +32,7 @@ export default async function SharedSkyPage({
 
   const positions = sky.positions || {};
   const connections = sky.connections || [];
-  const starCount = Object.keys(positions).length;
+  const starCount = sky.star_count || Object.keys(positions).length;
 
   const getDefaultPositionByKey = (key: string) => {
     if (key.startsWith("small-")) {

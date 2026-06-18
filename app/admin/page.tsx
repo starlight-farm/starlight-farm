@@ -21,6 +21,8 @@ export default function AdminPage() {
   const [pendingCount, setPendingCount] = useState(0);
   const [completedCount, setCompletedCount] = useState(0);
   const [memberCount, setMemberCount] = useState(0);
+  const [activeMemberCount, setActiveMemberCount] = useState(0);
+  const [withdrawnMemberCount, setWithdrawnMemberCount] = useState(0);
   const [orderCount, setOrderCount] = useState(0);
   const [orderedCount, setOrderedCount] = useState(0);
   const [canceledOrderCount, setCanceledOrderCount] = useState(0);
@@ -96,7 +98,18 @@ export default function AdminPage() {
   const loadMembers = async () => {
     const { data, error } = await supabase
       .from("profiles")
-      .select("id, name, phone, address, stars, total_stars, royal_stars")
+      .select(`
+        id,
+        name,
+        phone,
+        address,
+        stars,
+        total_stars,
+        royal_stars,
+        status,
+        withdrawn_at,
+        withdraw_reason
+      `)
       .order("name", { ascending: true });
 
     if (error) {
@@ -107,6 +120,18 @@ export default function AdminPage() {
     const rows = data ?? [];
 
     setMemberCount(rows.length);
+
+    setActiveMemberCount(
+      rows.filter(
+        (member) => member.status !== "withdrawn"
+      ).length
+    );
+
+    setWithdrawnMemberCount(
+      rows.filter(
+        (member) => member.status === "withdrawn"
+      ).length
+    );
 
     const totalStars = rows.reduce(
       (sum, member) => sum + (member.total_stars ?? 0),
@@ -644,10 +669,24 @@ export default function AdminPage() {
     <main className="min-h-screen bg-slate-950 p-8 text-white">
       <h1 className="mb-8 text-4xl font-bold">관리자 페이지</h1>
 
-      <div className="mb-8 grid gap-4 md:grid-cols-5">
+      <div className="mb-8 grid gap-4 md:grid-cols-7">
         <div className="rounded-xl bg-slate-800 p-4">
           <p className="text-sm text-slate-400">전체 회원</p>
           <p className="text-3xl font-bold">{memberCount}</p>
+        </div>
+
+        <div className="rounded-xl bg-green-800 p-4">
+          <p className="text-sm text-green-200">정상 회원</p>
+          <p className="text-3xl font-bold">
+            {activeMemberCount}
+          </p>
+        </div>
+
+        <div className="rounded-xl bg-red-800 p-4">
+          <p className="text-sm text-red-200">탈퇴 회원</p>
+          <p className="text-3xl font-bold">
+            {withdrawnMemberCount}
+          </p>
         </div>
 
         <div className="rounded-xl bg-blue-900 p-4">
@@ -1065,7 +1104,17 @@ export default function AdminPage() {
                 key={member.id}
                 className="rounded-xl border border-white/10 bg-white/5 p-4"
               >
-                <p className="font-bold">{member.name ?? "이름 없음"}</p>
+                <div className="flex items-center gap-2">
+                  <p className="font-bold">
+                    {member.name ?? "이름 없음"}
+                  </p>
+
+                  {member.status === "withdrawn" && (
+                    <span className="rounded-full bg-red-600 px-3 py-1 text-xs font-bold text-white">
+                      탈퇴회원
+                    </span>
+                  )}
+                </div>
 
                 <p className="text-sm text-slate-300">
                   휴대폰: {member.phone ?? "전화번호 없음"}
@@ -1087,12 +1136,32 @@ export default function AdminPage() {
                   왕별: {member.royal_stars ?? 0}개
                 </p>
 
-                <button
-                  onClick={() => addStarToMember(member.id, member.stars ?? 0)}
-                  className="mt-3 rounded-lg bg-yellow-400 px-4 py-2 text-sm font-bold text-slate-950 hover:bg-yellow-300"
-                >
-                  별 1개 지급
-                </button>
+                {member.status === "withdrawn" && (
+                  <>
+                    <p className="mt-2 text-sm text-red-300">
+                      탈퇴일 :
+                      {" "}
+                      {member.withdrawn_at
+                        ? new Date(member.withdrawn_at).toLocaleDateString("ko-KR")
+                        : "-"}
+                    </p>
+
+                    <p className="text-sm text-red-200">
+                      탈퇴사유 :
+                      {" "}
+                      {member.withdraw_reason || "미입력"}
+                    </p>
+                  </>
+                )}
+
+                {member.status !== "withdrawn" && (
+                  <button
+                    onClick={() => addStarToMember(member.id, member.stars ?? 0)}
+                    className="mt-3 rounded-lg bg-yellow-400 px-4 py-2 text-sm font-bold text-slate-950 hover:bg-yellow-300"
+                  >
+                    별 1개 지급
+                  </button>
+                )}
               </div>
             ))}
           </div>

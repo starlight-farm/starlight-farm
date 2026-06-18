@@ -118,6 +118,8 @@ export default function MyPage() {
       is_public: true,
       sky_name: skyName,
       is_gallery_public: galleryPublic,
+      star_count: stars,
+      royal_star_count: royalStars,
       updated_at: new Date().toISOString(),
     });
 
@@ -166,6 +168,8 @@ export default function MyPage() {
         is_public: true,
         sky_name: skyName,
         is_gallery_public: galleryPublic,
+        star_count: stars,
+        royal_star_count: royalStars,
         updated_at: new Date().toISOString(),
       });
 
