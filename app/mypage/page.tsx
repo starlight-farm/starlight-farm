@@ -775,7 +775,7 @@ export default function MyPage() {
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
             onPointerLeave={handlePointerUp}
-            className="relative mb-4 h-[520px] overflow-hidden rounded-3xl border border-blue-400/30 bg-[#020617] shadow-[0_0_40px_rgba(59,130,246,0.25)] select-none touch-none"
+            className="relative mb-4 aspect-[4/3] w-full overflow-hidden rounded-3xl border border-blue-400/30 bg-[#020617] shadow-[0_0_40px_rgba(59,130,246,0.25)] select-none touch-none"
             >
             {totalStars >= 100 && totalStars < 500 && (
               <>

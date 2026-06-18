@@ -10,6 +10,8 @@ export default function Home() {
   const [showBetaPopup, setShowBetaPopup] = useState(false);
   const [showSignupPopup, setShowSignupPopup] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [memberCount, setMemberCount] = useState(0);
+
 
   useEffect(() => {
     const checkLoginAndPopup = async () => {
@@ -19,6 +21,15 @@ export default function Home() {
   
       const loggedIn = !!user;
       setIsLoggedIn(loggedIn);
+
+      const { count } = await supabase
+        .from("profiles")
+        .select("id", {
+          count: "exact",
+          head: true,
+        })
+
+      setMemberCount(count ?? 0);
   
       const hiddenUntil = localStorage.getItem("betaPopupHide");
   
@@ -92,7 +103,7 @@ export default function Home() {
               지속적으로 개선하고 있습니다.
             </p>
 
-            <div className="sticky bottom-0 flex gap-3 bg-white pt-4">
+            <div className="flex gap-3">
               <button
                 onClick={hideToday}
                 className="flex-1 rounded-xl border border-slate-300 py-3 font-bold"
@@ -125,7 +136,7 @@ export default function Home() {
               <img
                 src="/images/byulbit.png"
                 alt="별빛이"
-                className="mx-auto mb-3 h-16 w-16 object-contain sm:h-28 sm:w-28"
+                className="mx-auto mb-4 h-32 w-32 object-contain sm:h-40 sm:w-40"
               />
 
               <p className="mb-1 text-xs font-bold text-amber-700 sm:text-sm">
@@ -133,7 +144,7 @@ export default function Home() {
               </p>
 
               <h2 className="mb-3 text-xl font-black text-slate-950 sm:text-2xl">
-                별을 모으려면 회원가입이 필요해요!
+                 🎉 가입 즉시 별 20개 지급
               </h2>
 
               <div className="mb-4 rounded-2xl border border-yellow-300 bg-yellow-50 p-3">
@@ -141,11 +152,27 @@ export default function Home() {
                   🎉 오픈 기념 이벤트
                 </p>
 
-                <p className="mt-2 text-lg font-black text-slate-950 sm:text-xl">
-                  선착순 회원 50명까지
-                  <br />
-                  회원가입 시 별 20개 적립!
-                </p>
+                {memberCount < 50 ? (
+                  <div className="mt-3 rounded-xl bg-white p-3">
+                    <p className="text-xs text-slate-500">
+                      선착순 혜택 잔여
+                    </p>
+
+                    <p className="text-3xl font-black text-amber-700">
+                      {50 - memberCount}명
+                    </p>
+
+                    <p className="mt-1 text-xs text-slate-500">
+                      가입 즉시 별 20개 지급
+                    </p>
+                  </div>
+                ) : (
+                  <div className="mt-3 rounded-xl bg-white p-3">
+                    <p className="font-bold text-red-600">
+                      선착순 이벤트 종료
+                    </p>
+                  </div>
+                )}
 
                 <p className="mt-2 text-xs text-slate-500">
                   적립된 별은 마이페이지의 나만의 밤하늘에서 확인할 수 있어요.
@@ -161,20 +188,24 @@ export default function Home() {
               </p>
 
               <div className="grid gap-2 text-left text-xs sm:text-sm">
-                <div className="rounded-xl bg-yellow-50 p-2.5 font-bold text-slate-800 sm:p-3">
+                <div className="rounded-2xl bg-white/10 p-5 font-bold text-slate-800 sm:p-3">
                   🥛 500ml 구매 인증 시 별 1개 적립
                 </div>
 
-                <div className="rounded-xl bg-yellow-50 p-2.5 font-bold text-slate-800 sm:p-3">
+                <div className="rounded-2xl bg-white/10 p-5 font-bold text-slate-800 sm:p-3">
                   🍶 1L 구매 인증 시 별 2개 적립
                 </div>
 
-                <div className="rounded-xl bg-yellow-50 p-2.5 font-bold text-slate-800 sm:p-3">
+                <div className="rounded-2xl bg-white/10 p-5 font-bold text-slate-800 sm:p-3">
                   🌙 적립한 별로 나만의 밤하늘 꾸미기
                 </div>
 
-                <div className="rounded-xl bg-yellow-50 p-2.5 font-bold text-slate-800 sm:p-3">
+                <div className="rounded-2xl bg-white/10 p-5">
                   🎁 별 40개로 요거트 1L 교환
+
+                  <p className="mt-1 text-xs text-slate-500">
+                    택배 발송 가능 · 배송비 별도
+                  </p>
                 </div>
               </div>
             </div>
@@ -266,7 +297,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="sticky bottom-0 flex gap-3 bg-white pt-4">
+            <div className="flex gap-3">
               <a
                 href="https://smartstore.naver.com/starlight-farm"
                 target="_blank"
@@ -451,7 +482,7 @@ export default function Home() {
                 <div className="rounded-2xl border border-amber-100 bg-[#FFF8EC] p-4">
                   <div className="flex items-center justify-between gap-3">
                     <span className="font-black">500ml</span>
-                    <span className="text-xl font-black">6,000원</span>
+                    <span className="text-xl font-black">5,500원</span>
                   </div>
                   <p className="mt-2 text-sm font-bold text-amber-700">
                     ⭐ 구매 인증 시 별 1개 적립
@@ -518,8 +549,12 @@ export default function Home() {
               <div className="rounded-2xl bg-white/10 p-5">
                 🍶 1L 구매 인증 시 별 2개
               </div>
-              <div className="rounded-2xl bg-white/10 p-5">
+              <div className="rounded-2xl bg-white/10 p-5 font-bold text-slate-800 sm:p-3">
                 🎁 별 40개로 요거트 1L 교환
+
+                <p className="mt-1 text-xs font-normal text-slate-500">
+                  택배 발송 가능 · 배송비 별도
+                </p>
               </div>
             </div>
           </div>
