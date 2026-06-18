@@ -112,80 +112,84 @@ export default function Home() {
       )}
 
       {showSignupPopup && (
-        <div className="fixed inset-0 z-[9998] flex items-center justify-center bg-black/60 p-4">
-          <div className="relative w-full max-w-md rounded-3xl bg-white p-8 text-center shadow-2xl">
+        <div className="fixed inset-0 z-[9998] flex items-center justify-center bg-black/60 p-3">
+          <div className="relative flex max-h-[88vh] w-full max-w-md flex-col overflow-hidden rounded-3xl bg-white text-center shadow-2xl">
             <button
               onClick={() => setShowSignupPopup(false)}
-              className="absolute right-5 top-5 text-2xl font-bold text-slate-400 hover:text-slate-900"
+              className="absolute right-4 top-4 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-2xl font-bold text-slate-500 hover:text-slate-900"
             >
               ×
             </button>
 
-            <img
-              src="/images/byulbit.png"
-              alt="별빛이"
-              className="mx-auto mb-3 h-20 w-20 object-contain sm:h-28 sm:w-28"
-            />
+            <div className="overflow-y-auto px-5 pb-4 pt-6">
+              <img
+                src="/images/byulbit.png"
+                alt="별빛이"
+                className="mx-auto mb-3 h-16 w-16 object-contain sm:h-28 sm:w-28"
+              />
 
-            <p className="mb-2 text-sm font-bold text-amber-700">
-              별빛목장 회원 혜택
-            </p>
-
-            <h2 className="mb-4 text-2xl font-black text-slate-950">
-              별을 모으려면 회원가입이 필요해요!
-            </h2>
-            <div className="mb-5 rounded-2xl border border-yellow-300 bg-yellow-50 p-4">
-              <p className="text-sm font-bold text-amber-700">
-                🎉 오픈 기념 이벤트
+              <p className="mb-1 text-xs font-bold text-amber-700 sm:text-sm">
+                별빛목장 회원 혜택
               </p>
 
-              <p className="mt-2 text-lg font-black text-slate-950 sm:text-xl">
-                선착순 회원 50명까지
+              <h2 className="mb-3 text-xl font-black text-slate-950 sm:text-2xl">
+                별을 모으려면 회원가입이 필요해요!
+              </h2>
+
+              <div className="mb-4 rounded-2xl border border-yellow-300 bg-yellow-50 p-3">
+                <p className="text-xs font-bold text-amber-700">
+                  🎉 오픈 기념 이벤트
+                </p>
+
+                <p className="mt-2 text-lg font-black text-slate-950 sm:text-xl">
+                  선착순 회원 50명까지
+                  <br />
+                  회원가입 시 별 20개 적립!
+                </p>
+
+                <p className="mt-2 text-xs text-slate-500">
+                  적립된 별은 마이페이지의 나만의 밤하늘에서 확인할 수 있어요.
+                </p>
+              </div>
+
+              <p className="mb-4 text-xs leading-5 text-slate-600 sm:text-sm sm:leading-6">
+                스마트스토어 구매 후 인증하면 별이 적립됩니다.
                 <br />
-                회원가입 시 별 20개 적립!
+                500ml는 별 1개, 1L는 별 2개가 쌓이고,
+                <br />
+                별 40개를 모으면 요거트 1L로 교환할 수 있어요.
               </p>
 
-              <p className="mt-2 text-xs text-slate-500">
-                적립된 별은 마이페이지의 나만의 밤하늘에서 확인할 수 있어요.
-              </p>
-            </div>
-            <p className="mb-6 text-sm leading-6 text-slate-600">
-              스마트스토어 구매 후 인증하면 별이 적립됩니다.
-              <br />
-              500ml는 별 1개, 1L는 별 2개가 쌓이고,
-              <br />
-              별 40개를 모으면 요거트 1L로 교환할 수 있어요.
-            </p>
+              <div className="grid gap-2 text-left text-xs sm:text-sm">
+                <div className="rounded-xl bg-yellow-50 p-2.5 font-bold text-slate-800 sm:p-3">
+                  🥛 500ml 구매 인증 시 별 1개 적립
+                </div>
 
-            <div className="mb-4 grid gap-2 text-left text-sm">
-              <div className="rounded-xl bg-yellow-50 p-3 font-bold text-slate-800">
-                🥛 500ml 구매 인증 시 별 1개 적립
-              </div>
+                <div className="rounded-xl bg-yellow-50 p-2.5 font-bold text-slate-800 sm:p-3">
+                  🍶 1L 구매 인증 시 별 2개 적립
+                </div>
 
-              <div className="rounded-xl bg-yellow-50 p-3 font-bold text-slate-800">
-                🍶 1L 구매 인증 시 별 2개 적립
-              </div>
+                <div className="rounded-xl bg-yellow-50 p-2.5 font-bold text-slate-800 sm:p-3">
+                  🌙 적립한 별로 나만의 밤하늘 꾸미기
+                </div>
 
-              <div className="rounded-xl bg-yellow-50 p-3 font-bold text-slate-800">
-                🌙 적립한 별로 나만의 밤하늘 꾸미기
-              </div>
-
-              <div className="rounded-xl bg-yellow-50 p-3 font-bold text-slate-800">
-                🎁 별 40개로 요거트 1L 교환
+                <div className="rounded-xl bg-yellow-50 p-2.5 font-bold text-slate-800 sm:p-3">
+                  🎁 별 40개로 요거트 1L 교환
+                </div>
               </div>
             </div>
 
-            <div className="sticky bottom-0 flex gap-3 bg-white pt-4">
+            <div className="flex gap-3 border-t bg-white p-4">
               <button
                 onClick={() => setShowSignupPopup(false)}
-                className="flex-1 rounded-xl border border-slate-300 py-3 font-bold text-slate-700"
+                className="flex-1 rounded-xl border border-slate-300 py-3 text-sm font-bold text-slate-700"
               >
                 나중에 하기
               </button>
 
               <Link
                 href="/signup"
-                className="flex-1 rounded-xl bg-yellow-400 py-3 font-bold text-slate-950 hover:bg-yellow-300"
+                className="flex-1 rounded-xl bg-yellow-400 py-3 text-sm font-bold text-slate-950 hover:bg-yellow-300"
               >
                 회원가입 하기
               </Link>
