@@ -9,7 +9,9 @@ export default async function SharedSkyPage({
 
   const { data: sky, error } = await supabase
     .from("user_sky")
-    .select("positions, connections, share_id, is_public, sky_name, updated_at")
+    .select(
+      "positions, connections, share_id, is_public, sky_name, updated_at, star_count, royal_star_count"
+    )
     .eq("share_id", shareId)
     .eq("is_public", true)
     .maybeSingle();
