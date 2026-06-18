@@ -30,6 +30,7 @@ export default function MyPage() {
   const [address, setAddress] = useState("");
   const [editingProfile, setEditingProfile] = useState(false);
   const [activeTab, setActiveTab] = useState("sky");
+  const [withdrawReason, setWithdrawReason] = useState("");
 
   const [editName, setEditName] = useState("");
   const [editPhone, setEditPhone] = useState("");
@@ -492,6 +493,50 @@ export default function MyPage() {
       alert("회원정보가 수정되었습니다.");
     };
 
+    const withdrawAccount = async () => {
+      const ok = window.confirm(
+        "정말 회원 탈퇴를 진행하시겠습니까?"
+      );
+    
+      if (!ok) return;
+    
+      const finalCheck = window.prompt(
+        "탈퇴를 진행하려면 '탈퇴'를 입력해주세요."
+      );
+    
+      if (finalCheck !== "탈퇴") {
+        alert("입력값이 일치하지 않습니다.");
+        return;
+      }
+
+      await supabase
+      .from("user_sky")
+      .update({
+        is_gallery_public: false,
+      })
+      .eq("user_id", userId);
+    
+      const { error } = await supabase
+        .from("profiles")
+        .update({
+          status: "withdrawn",
+          withdrawn_at: new Date().toISOString(),
+          withdraw_reason: withdrawReason || null,
+        })
+        .eq("id", userId);
+    
+      if (error) {
+        alert("회원 탈퇴 실패: " + error.message);
+        return;
+      }
+    
+      await supabase.auth.signOut();
+    
+      alert("회원 탈퇴가 완료되었습니다.");
+    
+      window.location.href = "/";
+    };
+
   const exchangeYogurt = async () => {
     if (processing) return;
 
@@ -783,6 +828,32 @@ export default function MyPage() {
               >
                 비밀번호 변경
               </button>
+
+              <div className="mt-8 block rounded-2xl border-4 border-red-500 bg-red-900 p-5 text-left">
+                <h3 className="mb-3 text-lg font-bold text-red-300">
+                  회원 탈퇴
+                </h3>
+
+                <p className="mb-3 text-sm text-slate-300">
+                  탈퇴 사유를 알려주시면 서비스 개선에 도움이 됩니다.
+                  (선택사항)
+                </p>
+
+                <textarea
+                  value={withdrawReason}
+                  onChange={(e) => setWithdrawReason(e.target.value)}
+                  placeholder="예) 사용 빈도가 적어요, 원하는 기능이 없어요, 기타..."
+                  className="mb-4 h-24 w-full rounded-lg bg-slate-800 p-3 text-white"
+                />
+
+                <button
+                  onClick={withdrawAccount}
+                  className="rounded-lg bg-red-600 px-5 py-3 font-bold text-white hover:bg-red-500"
+                >
+                  회원 탈퇴
+                </button>
+              </div>
+
             </>
           )}
       {activeTab === "sky" && (
