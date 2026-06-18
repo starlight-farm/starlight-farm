@@ -89,19 +89,25 @@ export default function Home() {
               🌟 별빛목장 베타 홈페이지
             </h2>
 
-            <p className="mb-6 whitespace-pre-line text-sm leading-6 text-slate-600">
-              안녕하세요. 별빛목장입니다.
+            <div className="mb-6 space-y-3 text-sm leading-6 text-slate-600">
+              <p>안녕하세요. 별빛목장입니다.</p>
 
-              현재 홈페이지는 베타(Beta) 테스트 기간으로
-              기능 개선 및 안정화 작업이 진행 중입니다.
+              <p>
+                현재 홈페이지는 베타(Beta) 테스트 기간으로<br className="hidden sm:block" />
+                기능 개선 및 안정화 작업이 진행 중입니다.
+              </p>
 
-              일부 기능은 변경될 수 있으며
-              회원 정보, 별 적립 내역,
-              구매 인증 내역 등이 초기화될 수 있습니다.
+              <p>
+                일부 기능은 변경될 수 있으며<br />
+                회원 정보, 별 적립 내역, 구매 인증 내역 등이<br className="hidden sm:block" />
+                초기화될 수 있습니다.
+              </p>
 
-              더 좋은 서비스를 위해
-              지속적으로 개선하고 있습니다.
-            </p>
+              <p>
+                더 좋은 서비스를 위해<br />
+                지속적으로 개선하고 있습니다.
+              </p>
+            </div>
 
             <div className="flex gap-3">
               <button
