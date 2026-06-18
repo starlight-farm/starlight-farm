@@ -67,7 +67,7 @@ export default function Home() {
             <img
               src="/images/byulbit.png"
               alt="별빛이"
-              className="mx-auto mb-4 h-28 w-28 object-contain"
+              className="mx-auto mb-3 h-20 w-20 object-contain sm:h-28 sm:w-28"
             />
 
             <p className="mb-2 text-sm font-bold text-amber-700">
@@ -92,7 +92,7 @@ export default function Home() {
               지속적으로 개선하고 있습니다.
             </p>
 
-            <div className="flex gap-3">
+            <div className="sticky bottom-0 flex gap-3 bg-white pt-4">
               <button
                 onClick={hideToday}
                 className="flex-1 rounded-xl border border-slate-300 py-3 font-bold"
@@ -124,7 +124,7 @@ export default function Home() {
             <img
               src="/images/byulbit.png"
               alt="별빛이"
-              className="mx-auto mb-4 h-28 w-28 object-contain"
+              className="mx-auto mb-3 h-20 w-20 object-contain sm:h-28 sm:w-28"
             />
 
             <p className="mb-2 text-sm font-bold text-amber-700">
@@ -139,7 +139,7 @@ export default function Home() {
                 🎉 오픈 기념 이벤트
               </p>
 
-              <p className="mt-2 text-xl font-black text-slate-950">
+              <p className="mt-2 text-lg font-black text-slate-950 sm:text-xl">
                 선착순 회원 50명까지
                 <br />
                 회원가입 시 별 20개 적립!
@@ -157,7 +157,7 @@ export default function Home() {
               별 40개를 모으면 요거트 1L로 교환할 수 있어요.
             </p>
 
-            <div className="mb-6 grid gap-2 text-left text-sm">
+            <div className="mb-4 grid gap-2 text-left text-sm">
               <div className="rounded-xl bg-yellow-50 p-3 font-bold text-slate-800">
                 🥛 500ml 구매 인증 시 별 1개 적립
               </div>
@@ -175,7 +175,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="flex gap-3">
+            <div className="sticky bottom-0 flex gap-3 bg-white pt-4">
               <button
                 onClick={() => setShowSignupPopup(false)}
                 className="flex-1 rounded-xl border border-slate-300 py-3 font-bold text-slate-700"
@@ -262,7 +262,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="flex gap-3">
+            <div className="sticky bottom-0 flex gap-3 bg-white pt-4">
               <a
                 href="https://smartstore.naver.com/starlight-farm"
                 target="_blank"

@@ -20,7 +20,7 @@ export default function ProductsPage() {
       href: "/products/blueberry",
       desc: "블루베리 과육이 들어간 달콤하고 부드러운 수제 요거트입니다.",
       options: [
-        { size: "500ml", price: "6,000원", stars: "별 1개 적립" },
+        { size: "500ml", price: "5,500원", stars: "별 1개 적립" },
         { size: "1,000ml", price: "10,000원", stars: "별 2개 적립" },
       ],
     },
