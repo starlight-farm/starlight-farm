@@ -9,7 +9,7 @@ export default async function SharedSkyPage({
 
   const { data: sky, error } = await supabase
     .from("user_sky")
-    .select("positions, connections, share_id, is_public")
+    .select("positions, connections, share_id, is_public, sky_name, updated_at")
     .eq("share_id", shareId)
     .eq("is_public", true)
     .maybeSingle();
@@ -32,6 +32,7 @@ export default async function SharedSkyPage({
 
   const positions = sky.positions || {};
   const connections = sky.connections || [];
+  const starCount = Object.keys(positions).length;
 
   const getDefaultPositionByKey = (key: string) => {
     if (key.startsWith("small-")) {
@@ -73,7 +74,26 @@ export default async function SharedSkyPage({
       <div className="w-full max-w-2xl rounded-3xl border border-white/10 bg-white/5 p-8 text-center">
         <div className="mb-4 text-5xl">🌙</div>
 
-        <h1 className="mb-3 text-4xl font-bold">공유된 밤하늘</h1>
+        {sky.sky_name && (
+          <div className="mb-4">
+            <p className="text-sm uppercase tracking-[0.3em] text-yellow-300">
+              STAR CONSTELLATION
+            </p>
+
+            <h1 className="mt-2 text-4xl font-black text-yellow-300">
+              ✨ {sky.sky_name} ✨
+            </h1>
+          </div>
+        )}
+         
+        <div className="mb-4 flex flex-wrap items-center justify-center gap-4 text-sm text-slate-300">
+          <span>⭐ 보유 별 {starCount}개</span>
+
+          <span>
+            📅 최근 수정{" "}
+            {new Date(sky.updated_at).toLocaleDateString("ko-KR")}
+          </span>
+        </div>
 
         <p className="mb-8 text-slate-300">
           별빛목장 회원이 만든 나만의 별자리예요.

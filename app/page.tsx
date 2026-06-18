@@ -11,7 +11,7 @@ export default function Home() {
   const [showSignupPopup, setShowSignupPopup] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [memberCount, setMemberCount] = useState(0);
-
+  const [gallerySkies, setGallerySkies] = useState<any[]>([]);
 
   useEffect(() => {
     const checkLoginAndPopup = async () => {
@@ -44,6 +44,20 @@ export default function Home() {
     };
   
     checkLoginAndPopup();
+
+    const loadGallery = async () => {
+      const { data } = await supabase
+        .from("user_sky")
+        .select("sky_name, share_id, updated_at")
+        .eq("is_gallery_public", true)
+        .not("sky_name", "is", null)
+        .order("updated_at", { ascending: false })
+        .limit(3);
+
+      setGallerySkies(data || []);
+    };
+    
+    loadGallery();
   }, []);
 
   const closePopup = () => {
@@ -629,6 +643,56 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* STAR GALLERY */}
+      <section className="mx-auto max-w-6xl px-6 py-20">
+        <p className="mb-3 text-center text-sm font-bold text-amber-700">
+          STAR GALLERY
+        </p>
+
+        <h2 className="mb-4 text-center text-4xl font-black">
+          고객들의 밤하늘
+        </h2>
+
+        <p className="mb-12 text-center text-slate-600">
+          별빛목장 회원들이 만든 특별한 별자리입니다.
+        </p>
+
+        {gallerySkies.length > 0 ? (
+          <div className="grid gap-6 md:grid-cols-3">
+            {gallerySkies.map((sky) => (
+              <Link
+                key={sky.share_id}
+                href={`/sky/${sky.share_id}`}
+                className="group rounded-3xl border border-amber-100 bg-white p-8 text-center shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+              >
+                <div className="mb-4 text-4xl">🌙</div>
+
+                <h3 className="mb-2 text-xl font-black text-slate-950 group-hover:text-amber-700">
+                  ✨ {sky.sky_name}
+                </h3>
+
+                <p className="text-sm text-slate-500">
+                  공유된 별자리 보기
+                </p>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-3xl border border-dashed border-slate-300 p-12 text-center text-slate-500">
+            아직 공개된 별자리가 없어요.
+          </div>
+        )}
+      </section>
+
+      <div className="pb-10 text-center">
+        <Link
+          href="/gallery"
+          className="inline-block rounded-full bg-yellow-400 px-6 py-3 font-black text-slate-950 hover:bg-yellow-300"
+        >
+          전시관 전체보기
+        </Link>
+      </div>
 
       {/* CTA */}
       <section className="mx-auto max-w-6xl px-6 py-20 text-center">

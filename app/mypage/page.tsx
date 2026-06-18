@@ -24,6 +24,8 @@ export default function MyPage() {
   const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(null);
   const [hasMoved, setHasMoved] = useState(false);
   const [shareId, setShareId] = useState("");
+  const [skyName, setSkyName] = useState("");
+  const [galleryPublic, setGalleryPublic] = useState(false);
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [editingProfile, setEditingProfile] = useState(false);
@@ -103,10 +105,12 @@ export default function MyPage() {
 
     const { error } = await supabase.from("user_sky").upsert({
       user_id: userId,
-      positions: newPositions,
-      connections: newConnections,
-      share_id: shareId || null,
-      is_public: shareId ? true : false,
+      positions,
+      connections,
+      share_id: newShareId,
+      is_public: true,
+      sky_name: skyName,
+      is_gallery_public: galleryPublic,
       updated_at: new Date().toISOString(),
     });
 
@@ -147,14 +151,16 @@ export default function MyPage() {
         .replaceAll("_", "")
         .replaceAll(".", "");
 
-    const { error } = await supabase.from("user_sky").upsert({
-      user_id: userId,
-      positions,
-      connections,
-      share_id: newShareId,
-      is_public: true,
-      updated_at: new Date().toISOString(),
-    });
+      const { error } = await supabase.from("user_sky").upsert({
+        user_id: userId,
+        positions,
+        connections,
+        share_id: newShareId,
+        is_public: true,
+        sky_name: skyName,
+        is_gallery_public: galleryPublic,
+        updated_at: new Date().toISOString(),
+      });
 
     if (error) {
       alert("공유 링크 만들기 실패: " + error.message);
@@ -397,7 +403,7 @@ export default function MyPage() {
 
     const { data: skyData } = await supabase
       .from("user_sky")
-      .select("positions, connections, share_id, is_public")
+      .select("positions, connections, share_id, is_public, sky_name, is_gallery_public")
       .eq("user_id", user.id)
       .maybeSingle();
 
@@ -405,6 +411,8 @@ export default function MyPage() {
       setPositions(skyData.positions || {});
       setConnections(skyData.connections || []);
       setShareId(skyData.share_id || "");
+      setSkyName(skyData.sky_name || "");
+      setGalleryPublic(skyData.is_gallery_public || false);
 
       localStorage.setItem(
         `star_positions_${user.id}`,
@@ -775,6 +783,40 @@ export default function MyPage() {
           <p className="mb-4 text-sm text-slate-500">
             이미 연결된 별 두 개를 다시 순서대로 클릭하면 연결선이 삭제돼요.
           </p>
+
+          <div className="mb-6 rounded-2xl bg-slate-900 p-5 text-left">
+            <p className="mb-2 font-bold text-white">
+              별자리 이름
+            </p>
+
+            <input
+              value={skyName}
+              onChange={(e) => setSkyName(e.target.value)}
+              placeholder="예) 우리 가족 별자리"
+              className="mb-3 w-full rounded-lg bg-slate-800 p-3 text-white"
+            />
+
+            <label className="flex items-center gap-2 text-sm text-slate-300">
+              <input
+                type="checkbox"
+                checked={galleryPublic}
+                onChange={(e) =>
+                  setGalleryPublic(e.target.checked)
+                }
+              />
+              별빛목장 전시관에 공개하기
+            </label>
+
+            <button
+              onClick={async () => {
+                await saveSkyToSupabase(positions, connections);
+                alert("별자리 정보가 저장되었습니다.");
+              }}
+              className="mt-3 rounded-lg bg-yellow-400 px-4 py-2 font-bold text-slate-950"
+            >
+              저장
+            </button>
+          </div>
 
           <div className="mb-8 inline-block rounded-full bg-red-500 px-5 py-2 font-bold text-white">
             {getGrade(royalStars)}
