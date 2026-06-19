@@ -49,7 +49,21 @@ export default function SignUpPage() {
     });
 
     if (error) {
-      alert("회원가입 실패: " + error.message);
+      if (
+        error.message.includes("already registered") ||
+        error.message.includes("User already registered")
+      ) {
+        alert(
+          "이미 가입된 이메일입니다.\n\n" +
+          "탈퇴한 계정일 수 있습니다.\n" +
+          "계정 복구를 원하시면 별빛목장으로 문의해주세요.\n\n" +
+          "☎ 061-870-8871\n" +
+          "✉ sl-farm@naver.com"
+        );
+      } else {
+        alert("회원가입 실패: " + error.message);
+      }
+    
       return;
     }
 

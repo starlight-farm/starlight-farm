@@ -459,28 +459,16 @@ export default function MyPage() {
     }
 
     if (data.status === "withdrawn") {
-      const restore = window.confirm(
-        "탈퇴한 계정입니다.\n\n계정을 복구하시겠습니까?"
+      alert(
+        "탈퇴 처리된 계정입니다.\n\n" +
+        "계정 복구를 원하시면 별빛목장으로 문의해주세요.\n\n" +
+        "☎ 061-870-8871\n" +
+        "✉ sl-farm@naver.com"
       );
     
-      if (restore) {
-        const { error: restoreError } = await supabase
-          .from("profiles")
-          .update({
-            status: "active",
-            withdrawn_at: null,
-            withdraw_reason: null,
-          })
-          .eq("id", user.id);
-    
-        if (!restoreError) {
-          alert("계정이 복구되었습니다.");
-        }
-      } else {
-        await supabase.auth.signOut();
-        window.location.href = "/";
-        return;
-      }
+      await supabase.auth.signOut();
+      window.location.href = "/";
+      return;
     }
 
     setName(data.name);
@@ -876,7 +864,7 @@ export default function MyPage() {
                     <p className="mb-3 text-sm text-slate-300">
                     계정을 탈퇴하면 전시관 공개가 해제됩니다.
                     구매내역과 적립 내역은 보관되며,
-                    동일 계정으로 다시 로그인하면 복구할 수 있습니다.
+                    계정 복구를 원하시면 별빛목장으로 문의해주세요.
                     </p>
 
                     <textarea
