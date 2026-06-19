@@ -26,7 +26,7 @@ export default function PlainYogurtPage() {
           </h1>
 
           <p className="mb-6 text-lg leading-relaxed text-slate-600">
-            화순에서 자란 무항생제 원유로 만든 진하고 부드러운 별빛목장
+            무항생제 원유로 만든 진하고 부드러운 별빛목장
             플레인 요거트입니다.
           </p>
 

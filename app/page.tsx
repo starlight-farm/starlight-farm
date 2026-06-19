@@ -254,11 +254,11 @@ export default function Home() {
         <div className="grid gap-12 md:grid-cols-2 md:items-center">
           <div>
             <div className="mb-4 inline-block rounded-full bg-yellow-100 px-4 py-2 text-sm font-bold text-amber-700">
-              🐄 화순 목장에서 직접 생산
+              🐄 별빛목장에서 직접 생산
             </div>
 
             <h1 className="mb-5 max-w-2xl text-3xl font-black leading-[1.18] tracking-[-0.04em] text-slate-950 sm:text-4xl md:text-5xl lg:text-6xl">
-            화순 목장에서 만든
+            별빛목장에서 만든
             <br />
             <span className="text-amber-700">
               무항생제 원유
@@ -270,7 +270,7 @@ export default function Home() {
             </h1>
 
             <p className="mb-6 max-w-xl text-sm leading-7 text-slate-700 sm:text-base md:text-lg md:leading-8">
-              별빛목장은 화순 목장에서 직접 생산한 신선한 원유를 사용합니다.
+              별빛목장은 화순 별빛목장에서 직접 생산한 신선한 원유를 사용합니다.
               <br className="hidden md:block" />
               HACCP인증 시설에서 정성껏 발효해 풍미있는 요거트로 만듭니다.
             </p>
@@ -374,7 +374,7 @@ export default function Home() {
           {
             icon: "🥛",
             title: "원유 준비",
-            desc: "화순 목장에서 생산한\n신선한 원유를 사용합니다.",
+            desc: "별빛 목장에서 생산한\n신선한 원유를 사용합니다.",
           },
           {
             icon: "🔥",
@@ -703,7 +703,7 @@ export default function Home() {
         </h2>
 
         <p className="mx-auto mb-8 max-w-2xl text-slate-600">
-          화순 목장에서 직접 생산한 원유로 만든 별빛목장 요거트를
+          별빛 목장에서 직접 생산한 원유로 만든 별빛목장 요거트를
           지금 스마트스토어에서 만나보세요.
         </p>
 

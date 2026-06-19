@@ -26,7 +26,7 @@ export default function BlueberryYogurtPage() {
           </h1>
 
           <p className="mb-6 text-lg leading-relaxed text-slate-600">
-          화순 무항생제 원유와 달콤한 블루베리를 담아 진하고 부드럽게 완성한 별빛목장 블루베리 요거트입니다.
+          무항생제 원유와 달콤한 블루베리를 담아 진하고 부드럽게 완성한 별빛목장 블루베리 요거트입니다.
           </p>
 
           <div className="mb-8 rounded-3xl border border-amber-100 bg-white shadow-sm p-8">
