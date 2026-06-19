@@ -31,6 +31,7 @@ export default function MyPage() {
   const [editingProfile, setEditingProfile] = useState(false);
   const [activeTab, setActiveTab] = useState("sky");
   const [withdrawReason, setWithdrawReason] = useState("");
+  const [showWithdraw, setShowWithdraw] = useState(false);
 
   const [editName, setEditName] = useState("");
   const [editPhone, setEditPhone] = useState("");
@@ -439,7 +440,15 @@ export default function MyPage() {
 
     const { data, error } = await supabase
       .from("profiles")
-      .select("name, phone, address, stars, royal_stars, total_stars")
+      .select(`
+        name,
+        phone,
+        address,
+        stars,
+        royal_stars,
+        total_stars,
+        status
+      `)
       .eq("id", user.id)
       .single();
 
@@ -447,6 +456,31 @@ export default function MyPage() {
       alert("회원정보를 불러오지 못했습니다: " + error.message);
       setLoading(false);
       return;
+    }
+
+    if (data.status === "withdrawn") {
+      const restore = window.confirm(
+        "탈퇴한 계정입니다.\n\n계정을 복구하시겠습니까?"
+      );
+    
+      if (restore) {
+        const { error: restoreError } = await supabase
+          .from("profiles")
+          .update({
+            status: "active",
+            withdrawn_at: null,
+            withdraw_reason: null,
+          })
+          .eq("id", user.id);
+    
+        if (!restoreError) {
+          alert("계정이 복구되었습니다.");
+        }
+      } else {
+        await supabase.auth.signOut();
+        window.location.href = "/";
+        return;
+      }
     }
 
     setName(data.name);
@@ -822,38 +856,46 @@ export default function MyPage() {
                 </div>
               )}
 
-              <button
+             <button
                 onClick={() => (window.location.href = "/reset-password")}
-                className="mb-6 rounded-full bg-slate-700 px-6 py-3 font-bold text-white hover:bg-slate-600"
+                className="rounded-full bg-slate-700 px-6 py-3 font-bold text-white hover:bg-slate-600"
               >
                 비밀번호 변경
               </button>
 
-              <div className="mt-8 block rounded-2xl border-4 border-red-500 bg-red-900 p-5 text-left">
-                <h3 className="mb-3 text-lg font-bold text-red-300">
-                  회원 탈퇴
-                </h3>
-
-                <p className="mb-3 text-sm text-slate-300">
-                  탈퇴 사유를 알려주시면 서비스 개선에 도움이 됩니다.
-                  (선택사항)
-                </p>
-
-                <textarea
-                  value={withdrawReason}
-                  onChange={(e) => setWithdrawReason(e.target.value)}
-                  placeholder="예) 사용 빈도가 적어요, 원하는 기능이 없어요, 기타..."
-                  className="mb-4 h-24 w-full rounded-lg bg-slate-800 p-3 text-white"
-                />
-
+              <div className="mt-2 text-center">
                 <button
-                  onClick={withdrawAccount}
-                  className="rounded-lg bg-red-600 px-5 py-3 font-bold text-white hover:bg-red-500"
+                  onClick={() => setShowWithdraw(!showWithdraw)}
+                  className="text-sm text-slate-500 underline hover:text-slate-300"
                 >
                   회원 탈퇴
                 </button>
-              </div>
 
+                {showWithdraw && (
+                  <div className="mt-4 rounded-2xl border border-white/10 bg-slate-900 p-5 text-left">
+                    <p className="mb-3 text-sm text-slate-300">
+                    계정을 탈퇴하면 전시관 공개가 해제됩니다.
+                    구매내역과 적립 내역은 보관되며,
+                    동일 계정으로 다시 로그인하면 복구할 수 있습니다.
+                    </p>
+
+                    <textarea
+                      value={withdrawReason}
+                      onChange={(e) => setWithdrawReason(e.target.value)}
+                      placeholder="탈퇴 사유 (선택)"
+                      className="mb-4 h-24 w-full rounded-lg bg-slate-800 p-3 text-white"
+                    />
+
+                    <button
+                      onClick={withdrawAccount}
+                      className="rounded-lg bg-red-600 px-4 py-2 text-sm font-bold text-white hover:bg-red-500"
+                    >
+                      회원 탈퇴 진행
+                    </button>
+                  </div>
+                )}
+
+              </div>
             </>
           )}
       {activeTab === "sky" && (

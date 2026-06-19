@@ -264,6 +264,32 @@ export default function AdminPage() {
     alert("별 1개가 지급되었습니다.");
   };
 
+  const restoreMember = async (memberId: string) => {
+    const ok = window.confirm(
+      "이 회원 계정을 복구하시겠습니까?"
+    );
+  
+    if (!ok) return;
+  
+    const { error } = await supabase
+      .from("profiles")
+      .update({
+        status: "active",
+        withdrawn_at: null,
+        withdraw_reason: null,
+      })
+      .eq("id", memberId);
+  
+    if (error) {
+      alert("복구 실패: " + error.message);
+      return;
+    }
+  
+    alert("회원이 복구되었습니다.");
+  
+    loadMembers();
+  };
+
   const filteredMembers = members.filter((member) => {
     const keyword = searchKeyword.toLowerCase();
 
@@ -1086,7 +1112,7 @@ export default function AdminPage() {
     )}
     {activeTab === "members" && (
       <div className="mb-8 rounded-2xl bg-slate-900 p-6">
-        <h2 className="mb-4 text-2xl font-bold">회원 별 지급</h2>
+        <h2 className="mb-4 text-2xl font-bold">회원 관리</h2>
 
         <input
           value={searchKeyword}
@@ -1151,6 +1177,14 @@ export default function AdminPage() {
                       {" "}
                       {member.withdraw_reason || "미입력"}
                     </p>
+
+                    <button
+                      onClick={() => restoreMember(member.id)}
+                      className="mt-3 rounded-lg bg-green-600 px-4 py-2 text-sm font-bold text-white hover:bg-green-500"
+                    >
+                      계정 복구
+                    </button>
+
                   </>
                 )}
 
