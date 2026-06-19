@@ -56,12 +56,12 @@ export default function MyPage() {
   };
   
   const defaultSmallPosition = (index: number) => {
-    const row = Math.floor(index / 10);
-    const col = index % 10;
+    const row = Math.floor(index / 6);
+    const col = index % 6;
   
     return {
-      top: 22 + row * 4,
-      left: 30 + col * 4,
+      top: 18 + row * 2.4,
+      left: 9 + col * 2.4,
     };
   };
   
