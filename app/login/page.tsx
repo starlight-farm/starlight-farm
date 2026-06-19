@@ -17,17 +17,49 @@ export default function LoginPage() {
       return;
     }
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email: email.trim(),
       password: password.trim(),
     });
-
+    
     if (error) {
       alert("로그인 실패: " + error.message);
-    } else {
-      alert("로그인 성공!");
-      window.location.href = "/mypage";
+      return;
     }
+    
+    const user = data.user;
+    
+    if (!user) {
+      alert("회원 정보를 확인하지 못했습니다.");
+      return;
+    }
+    
+    const { data: profile, error: profileError } = await supabase
+      .from("profiles")
+      .select("status")
+      .eq("id", user.id)
+      .single();
+    
+    if (profileError) {
+      await supabase.auth.signOut();
+      alert("회원 정보를 확인하지 못했습니다.");
+      return;
+    }
+    
+    if (profile.status === "withdrawn") {
+      await supabase.auth.signOut();
+    
+      alert(
+        "탈퇴 처리된 계정입니다.\n\n" +
+        "계정 복구를 원하시면 별빛목장으로 문의해주세요.\n\n" +
+        "☎ 061-870-8871\n" +
+        "✉ sl-farm@naver.com"
+      );
+    
+      return;
+    }
+    
+    window.location.href = "/mypage";
   };
 
   return (
