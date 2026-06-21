@@ -15,7 +15,7 @@ export default function NoticePage() {
   const loadNotices = async () => {
     const { data, error } = await supabase
       .from("notices")
-      .select("id, title, content, image_url, created_at")
+      .select("id, title, content, image_url, created_at, view_count")
       .order("created_at", { ascending: false });
 
     if (error) {
@@ -52,6 +52,29 @@ export default function NoticePage() {
     });
 
     setNoticeImages(grouped);
+  };
+
+  const increaseViewCount = async (
+    noticeId: number,
+    currentCount: number
+  ) => {
+    await supabase
+      .from("notices")
+      .update({
+        view_count: (currentCount ?? 0) + 1,
+      })
+      .eq("id", noticeId);
+  
+    setNotices((prev) =>
+      prev.map((item) =>
+        item.id === noticeId
+          ? {
+              ...item,
+              view_count: (item.view_count ?? 0) + 1,
+            }
+          : item
+      )
+    );
   };
 
   useEffect(() => {
@@ -98,13 +121,26 @@ export default function NoticePage() {
                   className={index !== 0 ? "border-t border-amber-100" : ""}
                 >
                   <button
-                    onClick={() => setOpenId(isOpen ? null : notice.id)}
+                    onClick={() => {
+                      if (!isOpen) {
+                        increaseViewCount(
+                          notice.id,
+                          notice.view_count ?? 0
+                        );
+                      }
+                    
+                      setOpenId(isOpen ? null : notice.id);
+                    }}
                     className="flex w-full items-center justify-between gap-4 px-5 py-5 text-left hover:bg-amber-50 sm:px-7"
                   >
                     <div className="min-w-0">
                       <div className="mb-2 text-xs font-bold text-amber-700">
                         {new Date(notice.created_at).toLocaleDateString("ko-KR")}
                       </div>
+
+                      <p className="text-xs text-slate-500">
+                        조회수 {notice.view_count ?? 0}
+                      </p>
 
                       <h2 className="truncate text-base font-black text-slate-900 sm:text-lg">
                         {notice.title}
