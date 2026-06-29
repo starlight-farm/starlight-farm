@@ -52,7 +52,6 @@ export default function Home() {
     loadGallery();
   }, []);
 
-  };
   return (
     <main className="min-h-screen bg-[#FFF8EC] text-slate-900">
       <Header />
