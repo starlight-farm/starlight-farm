@@ -7,7 +7,6 @@ import Footer from "../components/Footer";
 import { supabase } from "../lib/supabase";
 
 export default function Home() {
-  const [showBetaPopup, setShowBetaPopup] = useState(false);
   const [showSignupPopup, setShowSignupPopup] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [memberCount, setMemberCount] = useState(0);
@@ -31,15 +30,8 @@ export default function Home() {
 
       setMemberCount(count ?? 0);
   
-      const hiddenUntil = localStorage.getItem("betaPopupHide");
-  
-      if (!hiddenUntil) {
-        setShowBetaPopup(true);
-        return;
-      }
-  
-      if (Date.now() > Number(hiddenUntil)) {
-        setShowBetaPopup(true);
+      if (!loggedIn) {
+        setShowSignupPopup(true);
       }
     };
   
@@ -60,88 +52,10 @@ export default function Home() {
     loadGallery();
   }, []);
 
-  const closePopup = () => {
-    setShowBetaPopup(false);
-  
-    if (!isLoggedIn) {
-      setShowSignupPopup(true);
-    }
-  };
-  const hideToday = () => {
-    const sevenDays =
-      Date.now() + 1000 * 60 * 60 * 24 * 7;
-
-    localStorage.setItem(
-      "betaPopupHide",
-      sevenDays.toString()
-    );
-
-    setShowBetaPopup(false);
-
-    if (!isLoggedIn) {
-      setShowSignupPopup(true);
-    }
   };
   return (
     <main className="min-h-screen bg-[#FFF8EC] text-slate-900">
       <Header />
-      {showBetaPopup && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 p-4">
-          <div className="w-full max-w-md rounded-3xl bg-white p-8 text-center shadow-2xl">
-
-            <img
-              src="/images/byulbit.png"
-              alt="별빛이"
-              className="mx-auto mb-3 h-20 w-20 object-contain sm:h-28 sm:w-28"
-            />
-
-            <p className="mb-2 text-sm font-bold text-amber-700">
-              BETA SERVICE
-            </p>
-
-            <h2 className="mb-4 text-2xl font-black text-slate-950">
-              🌟 별빛목장 베타 홈페이지
-            </h2>
-
-            <div className="mb-6 space-y-3 text-sm leading-6 text-slate-600">
-              <p>안녕하세요. 별빛목장입니다.</p>
-
-              <p>
-                현재 홈페이지는 베타(Beta) 테스트 기간으로<br className="hidden sm:block" />
-                기능 개선 및 안정화 작업이 진행 중입니다.
-              </p>
-
-              <p>
-                일부 기능은 변경될 수 있으며<br />
-                회원 정보, 별 적립 내역, 구매 인증 내역 등이<br className="hidden sm:block" />
-                초기화될 수 있습니다.
-              </p>
-
-              <p>
-                더 좋은 서비스를 위해<br />
-                지속적으로 개선하고 있습니다.
-              </p>
-            </div>
-
-            <div className="flex gap-3">
-              <button
-                onClick={hideToday}
-                className="flex-1 rounded-xl border border-slate-300 py-3 font-bold"
-              >
-                7일간 보지 않기
-              </button>
-
-              <button
-                onClick={closePopup}
-                className="flex-1 rounded-xl bg-yellow-400 py-3 font-bold text-slate-950"
-              >
-                확인
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
       {showSignupPopup && (
         <div className="fixed inset-0 z-[9998] flex items-center justify-center bg-black/60 p-3">
           <div className="relative flex max-h-[88vh] w-full max-w-md flex-col overflow-hidden rounded-3xl bg-white text-center shadow-2xl">
