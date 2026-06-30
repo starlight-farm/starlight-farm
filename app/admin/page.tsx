@@ -137,7 +137,7 @@ export default function AdminPage() {
         royal_stars,
         status,
         withdrawn_at,
-        withdraw_reason
+        withdraw_reason,
         last_login_at
       `)
       .order("name", { ascending: true });
