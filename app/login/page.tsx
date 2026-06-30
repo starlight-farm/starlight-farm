@@ -59,6 +59,14 @@ export default function LoginPage() {
       return;
     }
     
+    // 마지막 로그인 시간 저장
+    await supabase
+    .from("profiles")
+    .update({
+      last_login_at: new Date().toISOString(),
+    })
+    .eq("id", user.id);
+
     window.location.href = "/mypage";
   };
 

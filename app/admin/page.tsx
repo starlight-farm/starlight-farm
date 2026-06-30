@@ -4,6 +4,35 @@ import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
 import Header from "../../components/Header";
 
+function getLastLoginText(lastLogin: string | null) {
+  if (!lastLogin) {
+    return "⚪ 접속 기록 없음";
+  }
+
+  const now = new Date();
+  const login = new Date(lastLogin);
+
+  const diff = Math.floor((now.getTime() - login.getTime()) / 1000);
+
+  if (diff < 60) {
+    return "🟢 방금 전";
+  }
+
+  if (diff < 3600) {
+    return `🟢 ${Math.floor(diff / 60)}분 전`;
+  }
+
+  if (diff < 86400) {
+    return `🟡 ${Math.floor(diff / 3600)}시간 전`;
+  }
+
+  if (diff < 2592000) {
+    return `⚪ ${Math.floor(diff / 86400)}일 전`;
+  }
+
+  return login.toLocaleDateString("ko-KR");
+}
+
 export default function AdminPage() {
   const [requests, setRequests] = useState<any[]>([]);
   const [members, setMembers] = useState<any[]>([]);
@@ -109,6 +138,7 @@ export default function AdminPage() {
         status,
         withdrawn_at,
         withdraw_reason
+        last_login_at
       `)
       .order("name", { ascending: true });
 
@@ -1152,6 +1182,10 @@ export default function AdminPage() {
 
                 <p className="text-sm font-bold text-yellow-300">
                   보유 별: {member.stars ?? 0}개
+                </p>
+
+                <p className="text-sm text-cyan-300">
+                  마지막 접속 : {getLastLoginText(member.last_login_at)}
                 </p>
 
                 <p className="text-sm font-bold text-pink-300">
